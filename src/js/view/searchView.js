@@ -7,8 +7,8 @@ class SearchView extends View {
   _searchBar = document.getElementById('location-search-bar');
 
   addHandlerShowSearchSuggestions(handler) {
-    this._searchBar.addEventListener('input', () => {
-      const { value: query } = this._searchBar;
+    this._searchBar.addEventListener('input', function (e) {
+      const { value: query } = e.target;
 
       handler(query);
     });

@@ -2,6 +2,7 @@ import * as model from './model';
 
 import searchView from './view/searchView';
 import currentWeatherView from './view/currentWeatherView';
+import weatherSummaryView from './view/weatherSummaryView';
 
 async function controlSearch(query) {
   await model.loadSearchSuggestions(query);
@@ -12,7 +13,7 @@ async function controlSearch(query) {
 async function controlCurrentWeather(index) {
   await model.loadForecast(index);
 
-  currentWeatherView.render(model.state.forecast);
+  weatherSummaryView.render(model.state.forecast.forecast.forecastday);
 }
 
 searchView.addHandlerShowSearchSuggestions(controlSearch);

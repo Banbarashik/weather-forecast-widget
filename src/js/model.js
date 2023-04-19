@@ -19,3 +19,8 @@ export async function loadForecast(index) {
     `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
   );
 }
+
+// TODO: decide if the info coming from the API should be formatted
+
+// Features:
+// a button which will ask for the user's location and show the temp for their city

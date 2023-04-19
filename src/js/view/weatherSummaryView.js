@@ -7,10 +7,10 @@ class WeatherSummary extends View {
 
   _generateMarkup() {
     return this._data
-      .map(function (day) {
-        const { date: dateStr } = day;
-        const dateObj = new Date(dateStr);
-        const dayName = getDayName(dateObj);
+      .map(function (data) {
+        const { date, day } = data;
+
+        const dayName = getDayName(new Date(date));
 
         const { icon: iconUrl } = day.condition;
 

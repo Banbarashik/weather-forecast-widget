@@ -8,33 +8,16 @@ class WeatherSummary extends View {
   _generateMarkup() {
     return this._data
       .map(function (day) {
-        //   date: forecastDay.date,
-        // maxTempC: forecastDay.day.maxtemp_c,
-        // minTempC: forecastDay.day.mintemp_c,
-        // maxTempF: forecastDay.day.maxtemp_f,
-        // minTempF: forecastDay.day.mintemp_f,
-        // icon: forecastDay.day.condition.icon,
-        // hourly: forecastDay.hour,
-
-        /* const { date, day } = data;
-
-        const dayName = getDayName(new Date(date));
-
-        const { icon: iconUrl } = day.condition;
-
-        const { mintemp_c: minTemp, maxtemp_c: maxTemp } = day; */
-
-        const dayName = getDayName(new Date(day.date));
-        const { minTempC, maxTempC } = day;
-        const { icon: iconUrl } = day;
+        const date = new Date(day.dateStr);
+        const dayName = getDayName(date);
 
         return `
           <div class="weather-summary">
             <h3 class="weather-summary__day-name">${dayName}</h3>
-            <img class="weather-summary__icon" src="${iconUrl}">
+            <img class="weather-summary__icon" src="${day.iconUrl}">
             <p class="weather-summary__temp">
-              <span class="weather-summary__temp_min">${minTempC}</span>
-              <span class="weather-summary__temp_max">${maxTempC}</span>
+              <span class="weather-summary__temp_min">${day.minTempC}</span>
+              <span class="weather-summary__temp_max">${day.maxTempC}</span>
             </p>
           </div>
         `;

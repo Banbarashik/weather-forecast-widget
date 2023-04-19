@@ -23,12 +23,12 @@ export async function loadForecast(index) {
     forecastDay
   ) {
     return {
-      date: forecastDay.date,
+      dateStr: forecastDay.date,
       maxTempC: forecastDay.day.maxtemp_c,
       minTempC: forecastDay.day.mintemp_c,
       maxTempF: forecastDay.day.maxtemp_f,
       minTempF: forecastDay.day.mintemp_f,
-      icon: forecastDay.day.condition.icon,
+      iconUrl: forecastDay.day.condition.icon,
       hourly: forecastDay.hour,
     };
   });

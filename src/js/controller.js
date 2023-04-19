@@ -1,3 +1,5 @@
+import '../sass/main.scss'
+
 import * as model from './model';
 
 import searchView from './view/searchView';

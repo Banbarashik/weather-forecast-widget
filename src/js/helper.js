@@ -1,5 +1,4 @@
-// prettier-ignore
-const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export async function fetchAndParse(url) {
   const res = await fetch(url);

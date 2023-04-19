@@ -3,7 +3,7 @@ import { fetchAndParse } from './helper';
 
 export const state = {
   searchSuggestions: [],
-  forecast: { location: {}, current: {}, forecast: { forecastday: [] } }, // the same structure as in the object returned from the API
+  currentCity: { location: {}, weatherNow: {}, forecast: [] },
 };
 
 export async function loadSearchSuggestions(query) {
@@ -15,12 +15,30 @@ export async function loadSearchSuggestions(query) {
 export async function loadForecast(index) {
   const { lat, lon } = state.searchSuggestions[index];
 
-  state.forecast = await fetchAndParse(
+  const forecast = await fetchAndParse(
     `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
   );
+
+  const formatedForecastArray = forecast.forecast.forecastday.map(function (
+    forecastDay
+  ) {
+    return {
+      date: forecastDay.date,
+      maxTempC: forecastDay.day.maxtemp_c,
+      minTempC: forecastDay.day.mintemp_c,
+      maxTempF: forecastDay.day.maxtemp_f,
+      minTempF: forecastDay.day.mintemp_f,
+      icon: forecastDay.day.condition.icon,
+      hourly: forecastDay.hour,
+    };
+  });
+
+  console.log(formatedForecastArray);
+
+  state.currentCity.forecast = formatedForecastArray;
 }
 
-// TODO: decide if the info coming from the API should be formatted
 
 // Features:
 // a button which will ask for the user's location and show the temp for their city
+// change the background depending of the current weather conditions

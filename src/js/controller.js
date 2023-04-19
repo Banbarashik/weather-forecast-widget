@@ -13,7 +13,7 @@ async function controlSearch(query) {
 async function controlCurrentWeather(index) {
   await model.loadForecast(index);
 
-  weatherSummaryView.render(model.state.forecast.forecast.forecastday);
+  weatherSummaryView.render(model.state.currentCity.forecast);
 }
 
 searchView.addHandlerShowSearchSuggestions(controlSearch);

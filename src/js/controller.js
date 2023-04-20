@@ -3,7 +3,7 @@ import '../sass/main.scss';
 import * as model from './model';
 
 import searchView from './view/searchView';
-import currentWeatherView from './view/currentWeatherView';
+import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
 
 async function controlSearch(query) {
@@ -15,7 +15,11 @@ async function controlSearch(query) {
 async function controlCurrentWeather(index) {
   await model.loadForecast(index);
 
-  forecastView.render(model.state.currentCity.forecast);
+  weatherNow.render({
+    location: model.state.weather.location,
+    now: model.state.weather.now,
+  });
+  forecastView.render(model.state.weather.forecast);
 }
 
 searchView.addHandlerShowSearchSuggestions(controlSearch);

@@ -1,10 +1,10 @@
 import View from './View';
 
 class SearchView extends View {
-  _parentElement = document.getElementById('search-suggestions__list');
+  _parentElement = document.getElementById('search__suggestions');
   _data;
 
-  _searchBar = document.getElementById('location-search-bar');
+  _searchBar = document.getElementById('search__bar');
 
   addHandlerShowSearchSuggestions(handler) {
     this._searchBar.addEventListener('input', function (e) {
@@ -16,7 +16,7 @@ class SearchView extends View {
 
   addHandlerShowCurrentWeather(handler) {
     this._parentElement.addEventListener('click', function (e) {
-      const suggestion = e.target.closest('.search-suggestions__item');
+      const suggestion = e.target.closest('.search__suggestion');
       if (!suggestion) return;
 
       const { index } = suggestion.dataset;
@@ -28,7 +28,7 @@ class SearchView extends View {
     return this._data
       .map(
         ({ name, region, country }, i) =>
-          `<li class="search-suggestions__item" data-index="${i}">${name}, ${
+          `<li class="search__suggestion" data-index="${i}">${name}, ${
             region ? region + ',' : ''
           } ${country}</li>`
       )

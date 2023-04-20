@@ -92,6 +92,4 @@ export async function loadForecast(index) {
   state.weather.forecast = formatedForecastArray;
 }
 
-// Features:
-// a button which will ask for the user's location and show the temp for their city
-// change the background depending of the current weather conditions
+

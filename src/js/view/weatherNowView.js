@@ -1,5 +1,5 @@
 import View from './View';
-import { formatCurrentDate } from '../helper';
+import { formatDate } from '../helper';
 
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
@@ -22,10 +22,8 @@ class WeatherNow extends View {
   };
 
   _generateMarkup() {
-    // time: the full day of the week name and the current time
-    // weatherConditions: text
-    // wind speed: kmh
-    // feels like: temp C
+    const displayDate = formatDate(new Date(this._data.location.localTime));
+
     return `
       <div class="weather-summary">
         <h3 class="weather-summary__day-name">Now</h3>
@@ -36,7 +34,7 @@ class WeatherNow extends View {
       </div>
 
       <div class="weather-now__extra-info">
-        <p class="weather-now__local-time">${this._data.location.localTime}</p>
+        <p class="weather-now__local-time">${displayDate}</p>
         <p class="weather-now__condition">${this._data.now.condition.text}</p>
         <p class="weather-now__wind-speed">${this._data.now.windSpeed_kmh}</p>
         <p class="weather-now__feels-like-temp">${this._data.now.feelsLikeTempC}</p>

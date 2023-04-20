@@ -1,4 +1,5 @@
-const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// prettier-ignore
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export async function fetchAndParse(url) {
   const res = await fetch(url);
@@ -8,6 +9,11 @@ export async function fetchAndParse(url) {
 const isToday = date => date.toDateString() === new Date().toDateString();
 
 export const getDayName = date =>
-  isToday(date) ? 'Today' : weekdays[date.getDay()];
+  isToday(date) ? 'Today' : weekdays[date.getDay()].slice(0, 3);
 
-export function formatCurrentDate(date) {}
+export function formatDate(date) {
+  const dayName = weekdays[date.getDay()];
+  const time = `${date.getHours()}:${date.getMinutes()}`;
+
+  return dayName + ' ' + time;
+}

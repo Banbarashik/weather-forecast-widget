@@ -22,14 +22,25 @@ class WeatherNow extends View {
   };
 
   _generateMarkup() {
+    // time: the full day of the week name and the current time
+    // weatherConditions: text
+    // wind speed: kmh
+    // feels like: temp C
     return `
-      <li class="weather-summary">
+      <div class="weather-summary">
         <h3 class="weather-summary__day-name">Now</h3>
         <img class="weather-summary__icon" src="${this._data.now.condition.iconUrl}">
         <p class="weather-summary__temp">
           <span class="weather-summary__temp_now">${this._data.now.tempC}</span>
         </p>
-      </li>
+      </div>
+
+      <div class="weather-now__extra-info">
+        <p class="weather-now__local-time">${this._data.location.localTime}</p>
+        <p class="weather-now__condition">${this._data.now.condition.text}</p>
+        <p class="weather-now__wind-speed">${this._data.now.windSpeed_kmh}</p>
+        <p class="weather-now__feels-like-temp">${this._data.now.feelsLikeTempC}</p>
+      </div>
     `;
   }
 }

@@ -12,20 +12,21 @@ export const state = {
       localTime: '',
     },
     now: {
-      tempC: 0,
-      feelsLikeTempC: 0,
-      tempF: 0,
-      feelsLikeTempF: 0,
+      temp: {
+        c: 0,
+        f: 0,
+        feelsLike: { c: 0, f: 0 },
+      },
       condition: { text: '', iconUrl: '' },
       windSpeed_kmh: 0,
     },
     forecast: [
       {
-        dateStr: '',
-        maxTempC: 0,
-        minTempC: 0,
-        maxTempF: 0,
-        minTempF: 0,
+        date: '',
+        temp: {
+          min: { c: 0, f: 0 },
+          max: { c: 0, f: 0 },
+        },
         iconUrl: '',
         hourly: [{}],
       },
@@ -62,10 +63,14 @@ export async function loadForecast(index) {
   };
 
   const formattedWeatherNowObject = {
-    tempC: forecast.current.temp_c,
-    feelsLikeTempC: forecast.current.feelslike_c,
-    tempF: forecast.current.temp_f,
-    feelsLikeTempF: forecast.current.feelslike_f,
+    temp: {
+      c: forecast.current.temp_c,
+      f: forecast.current.temp_f,
+      feelsLike: {
+        c: forecast.current.feelslike_c,
+        f: forecast.current.feelslike_f,
+      },
+    },
     condition: {
       text: forecast.current.condition.text,
       iconUrl: forecast.current.condition.icon,
@@ -77,11 +82,11 @@ export async function loadForecast(index) {
     forecastDay
   ) {
     return {
-      dateStr: forecastDay.date,
-      maxTempC: forecastDay.day.maxtemp_c,
-      minTempC: forecastDay.day.mintemp_c,
-      maxTempF: forecastDay.day.maxtemp_f,
-      minTempF: forecastDay.day.mintemp_f,
+      date: forecastDay.date,
+      temp: {
+        min: { c: forecastDay.day.mintemp_c, f: forecastDay.day.mintemp_f },
+        max: { c: forecastDay.day.maxtemp_c, f: forecastDay.day.maxtemp_f },
+      },
       iconUrl: forecastDay.day.condition.icon,
       hourly: forecastDay.hour,
     };

@@ -14,7 +14,7 @@ class SearchView extends View {
     });
   }
 
-  addHandlerShowCurrentWeather(handler) {
+  addHandlerShowForecast(handler) {
     this._parentElement.addEventListener('click', function (e) {
       const suggestion = e.target.closest('.search__suggestion');
       if (!suggestion) return;

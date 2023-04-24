@@ -12,8 +12,12 @@ async function controlSearch(query) {
   searchView.render(model.state.searchSuggestions);
 }
 
-async function controlCurrentWeather(index) {
+async function controlForecast(index) {
   await model.loadForecast(index);
+
+  model.resetSearchSuggestions();
+
+  searchView.render(model.state.searchSuggestions);
 
   weatherNow.render({
     location: model.state.weather.location,
@@ -23,4 +27,4 @@ async function controlCurrentWeather(index) {
 }
 
 searchView.addHandlerShowSearchSuggestions(controlSearch);
-searchView.addHandlerShowCurrentWeather(controlCurrentWeather);
+searchView.addHandlerShowForecast(controlForecast);

@@ -39,6 +39,10 @@ export async function loadSearchSuggestions(query) {
   );
 }
 
+export function resetSearchSuggestions() {
+  state.searchSuggestions = [];
+}
+
 export async function loadForecast(index) {
   const { lat, lon } = state.searchSuggestions[index];
 
@@ -91,5 +95,3 @@ export async function loadForecast(index) {
   state.weather.now = formattedWeatherNowObject;
   state.weather.forecast = formatedForecastArray;
 }
-
-

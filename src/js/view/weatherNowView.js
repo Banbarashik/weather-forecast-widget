@@ -9,7 +9,7 @@ class WeatherNow extends View {
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
-      localTime: '',
+      localtime: '',
     },
     now: {
       temp: {
@@ -23,23 +23,41 @@ class WeatherNow extends View {
   };
 
   _generateMarkup() {
-    const displayDate = formatDate(new Date(this._data.location.localTime));
-    // const displayTempC = Math.round()
+    const {
+      location: { name, country, localtime },
+      now: { temp, condition, windSpeed_kmh },
+    } = this._data;
+
+    const displayData = {
+      location: `${name}, ${country}`,
+      localtime: formatDate(new Date(localtime)),
+      temp: {
+        c: Math.round(temp.c),
+        f: Math.round(temp.f),
+        feelsLike: {
+          c: Math.round(temp.feelsLike.c),
+          f: Math.round(temp.feelsLike.f),
+        },
+      },
+      windSpeed_kmh: Math.round(windSpeed_kmh),
+      condition,
+    };
 
     return `
       <div class="weather-summary">
         <h3 class="weather-summary__day-name">Now</h3>
-        <img class="weather-summary__icon" src="${this._data.now.condition.iconUrl}">
+        <img class="weather-summary__icon" src="${displayData.condition.iconUrl}">
         <p class="weather-summary__temp">
-          <span class="weather-summary__temp_now">${this._data.now.temp.c}</span>
+          <span class="weather-summary__temp_now">${displayData.temp.c}</span>
         </p>
       </div>
 
       <div class="weather-now__extra-info">
-        <p class="weather-now__local-time">${displayDate}</p>
-        <p class="weather-now__condition">${this._data.now.condition.text}</p>
-        <p class="weather-now__wind-speed">${this._data.now.windSpeed_kmh}</p>
-        <p class="weather-now__feels-like-temp">${this._data.now.temp.feelsLike.c}</p>
+        <p class="weather-now__location">${displayData.location}</p>
+        <p class="weather-now__localtime">${displayData.localtime}</p>
+        <p class="weather-now__condition">${displayData.condition.text}</p>
+        <p class="weather-now__wind-speed">Wind speed: ${displayData.windSpeed_kmh}</p>
+        <p class="weather-now__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
       </div>
     `;
   }

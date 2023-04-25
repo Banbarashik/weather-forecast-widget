@@ -18,14 +18,14 @@ class WeatherNow extends View {
         feelsLike: { c: 0, f: 0 },
       },
       condition: { text: '', iconUrl: '' },
-      windSpeed_kmh: 0,
+      wind: { kmh: 0, mph: 0 },
     },
   };
 
   _generateMarkup() {
     const {
       location: { name, country, localtime },
-      now: { temp, condition, windSpeed_kmh },
+      now: { temp, condition, wind },
     } = this._data;
 
     const displayData = {
@@ -39,7 +39,10 @@ class WeatherNow extends View {
           f: Math.round(temp.feelsLike.f) + '&deg;F',
         },
       },
-      windSpeed_kmh: Math.round(windSpeed_kmh) + ' km/h',
+      wind: {
+        kmh: Math.round(wind.kmh) + ' km/h',
+        mph: Math.round(wind.mph) + ' mph',
+      },
       condition,
     };
 
@@ -56,7 +59,7 @@ class WeatherNow extends View {
         <p class="weather-now__location">${displayData.location}</p>
         <p class="weather-now__localtime">${displayData.localtime}</p>
         <p class="weather-now__condition">${displayData.condition.text}</p>
-        <p class="weather-now__wind-speed">Wind: ${displayData.windSpeed_kmh}</p>
+        <p class="weather-now__wind-speed">Wind: ${displayData.wind.kmh}</p>
         <p class="weather-now__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
       </div>
     `;

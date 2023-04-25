@@ -9,7 +9,7 @@ export const state = {
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
-      localTime: '',
+      localtime: '',
     },
     now: {
       temp: {
@@ -18,7 +18,7 @@ export const state = {
         feelsLike: { c: 0, f: 0 },
       },
       condition: { text: '', iconUrl: '' },
-      windSpeed_kmh: 0,
+      wind: { kmh: 0, mph: 0 },
     },
     forecast: [
       {
@@ -59,7 +59,7 @@ export async function loadForecast(index) {
       lat: forecast.location.lat,
       lon: forecast.location.lon,
     },
-    localTime: forecast.location.localtime,
+    localtime: forecast.location.localtime,
   };
 
   const formattedWeatherNowObject = {
@@ -75,7 +75,10 @@ export async function loadForecast(index) {
       text: forecast.current.condition.text,
       iconUrl: forecast.current.condition.icon,
     },
-    windSpeed_kmh: forecast.current.wind_kph,
+    wind: {
+      kmh: forecast.current.wind_kph,
+      mph: forecast.current.wind_mph,
+    },
   };
 
   const formatedForecastArray = forecast.forecast.forecastday.map(function (

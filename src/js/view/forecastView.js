@@ -24,12 +24,12 @@ class ForecastView extends View {
           dayName: getDayName(new Date(date)),
           temp: {
             min: {
-              c: Math.round(temp.min.c),
-              f: Math.round(temp.min.f),
+              c: Math.round(temp.min.c) + '&deg;',
+              f: Math.round(temp.min.f) + '&deg;',
             },
             max: {
-              c: Math.round(temp.max.c),
-              f: Math.round(temp.max.f),
+              c: Math.round(temp.max.c) + '&deg;',
+              f: Math.round(temp.max.f) + '&deg;',
             },
           },
           iconUrl,

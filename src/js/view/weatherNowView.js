@@ -32,14 +32,14 @@ class WeatherNow extends View {
       location: `${name}, ${country}`,
       localtime: formatDate(new Date(localtime)),
       temp: {
-        c: Math.round(temp.c),
-        f: Math.round(temp.f),
+        c: Math.round(temp.c) + '&deg;C',
+        f: Math.round(temp.f) + '&deg;F',
         feelsLike: {
-          c: Math.round(temp.feelsLike.c),
-          f: Math.round(temp.feelsLike.f),
+          c: Math.round(temp.feelsLike.c) + '&deg;C',
+          f: Math.round(temp.feelsLike.f) + '&deg;F',
         },
       },
-      windSpeed_kmh: Math.round(windSpeed_kmh),
+      windSpeed_kmh: Math.round(windSpeed_kmh) + ' km/h',
       condition,
     };
 
@@ -56,7 +56,7 @@ class WeatherNow extends View {
         <p class="weather-now__location">${displayData.location}</p>
         <p class="weather-now__localtime">${displayData.localtime}</p>
         <p class="weather-now__condition">${displayData.condition.text}</p>
-        <p class="weather-now__wind-speed">Wind speed: ${displayData.windSpeed_kmh}</p>
+        <p class="weather-now__wind-speed">Wind: ${displayData.windSpeed_kmh}</p>
         <p class="weather-now__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
       </div>
     `;

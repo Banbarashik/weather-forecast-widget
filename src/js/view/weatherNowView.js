@@ -55,12 +55,12 @@ class WeatherNow extends View {
         </p>
       </div>
 
-      <div class="weather-now__extra-info">
-        <p class="weather-now__location">${displayData.location}</p>
-        <p class="weather-now__localtime">${displayData.localtime}</p>
-        <p class="weather-now__condition">${displayData.condition.text}</p>
-        <p class="weather-now__wind-speed">Wind: ${displayData.wind.kmh}</p>
-        <p class="weather-now__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
+      <div class="weather-extra-info">
+        <p class="weather-extra-info__location">${displayData.location}</p>
+        <p class="weather-extra-info__localtime">${displayData.localtime}</p>
+        <p class="weather-extra-info__condition">${displayData.condition.text}</p>
+        <p class="weather-extra-info__wind-speed">Wind: ${displayData.wind.kmh}</p>
+        <p class="weather-extra-info__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
       </div>
     `;
   }

@@ -1,5 +1,9 @@
 import { API_URL, API_KEY, FORECAST_NUM_OF_DAYS } from './config';
-import { fetchAndParse } from './helper';
+import {
+  fetchAndParse,
+  getHourIn24hrFormat,
+  getHourIn12hrFormat,
+} from './helper';
 
 export const state = {
   searchSuggestions: [],
@@ -91,7 +95,19 @@ export async function loadForecast(index) {
         max: { c: forecastDay.day.maxtemp_c, f: forecastDay.day.maxtemp_f },
       },
       iconUrl: forecastDay.day.condition.icon,
-      hourly: forecastDay.hour,
+      hourly: forecastDay.hour.map(function (hour) {
+        return {
+          time: {
+            '24hrFormat': getHourIn24hrFormat(new Date(hour.time)),
+            '12hrFormat': getHourIn12hrFormat(new Date(hour.time)),
+          },
+          temp: {
+            c: hour.temp_c,
+            f: hour.temp_f,
+          },
+          condition: { iconUrl: hour.condition.icon },
+        };
+      }),
     };
   });
 

@@ -13,7 +13,7 @@ export const getDayName = date =>
 
 export function formatDate(date) {
   const dayName = weekdays[date.getDay()];
-  const time = `${date.getHours()}:${date.getMinutes()}`;
+  const time = date.getHours() + ':' + date.getMinutes();
 
   return dayName + ' ' + time;
 }

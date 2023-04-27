@@ -114,6 +114,10 @@ export async function loadForecast(index) {
   console.log(formattedLocationObject);
   console.log(formattedWeatherNowObject);
   console.log(formatedForecastArray);
+  console.log(
+    formatedForecastArray[0].hourly[0].time['24hrFormat'],
+    formatedForecastArray[0].hourly[0].time['12hrFormat']
+  );
 
   state.weather.location = formattedLocationObject;
   state.weather.now = formattedWeatherNowObject;

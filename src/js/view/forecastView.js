@@ -11,7 +11,16 @@ class ForecastView extends View {
         max: { c: 0, f: 0 },
       },
       iconUrl: '',
-      hourly: [{}],
+      hourly: [
+        {
+          time: {
+            '24hrFormat': '',
+            '12hrFormat': '',
+          },
+          temp: { c: 0, f: 0 },
+          condition: { iconUrl: '' },
+        },
+      ],
     },
   ];
 
@@ -43,6 +52,7 @@ class ForecastView extends View {
               <span class="weather-summary__temp_min">${displayData.temp.min.c}</span>
               <span class="weather-summary__temp_max">${displayData.temp.max.c}</span>
             </p>
+            TODO markup for each hour's forecast
           </li>
         `;
       })

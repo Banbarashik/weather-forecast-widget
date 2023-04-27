@@ -27,21 +27,29 @@ class ForecastView extends View {
   _generateMarkup() {
     return this._data
       .map(function (dayOfWeek) {
-        const { date, temp, iconUrl } = dayOfWeek;
-
         const displayData = {
-          dayName: getDayName(new Date(date)),
+          dayName: getDayName(new Date(dayOfWeek.date)),
           temp: {
             min: {
-              c: Math.round(temp.min.c) + '&deg;',
-              f: Math.round(temp.min.f) + '&deg;',
+              c: Math.round(dayOfWeek.temp.min.c) + '&deg;',
+              f: Math.round(dayOfWeek.temp.min.f) + '&deg;',
             },
             max: {
-              c: Math.round(temp.max.c) + '&deg;',
-              f: Math.round(temp.max.f) + '&deg;',
+              c: Math.round(dayOfWeek.temp.max.c) + '&deg;',
+              f: Math.round(dayOfWeek.temp.max.f) + '&deg;',
             },
           },
-          iconUrl,
+          iconUrl: dayOfWeek.iconUrl,
+          hourly: dayOfWeek.hourly.map(function (hour) {
+            return {
+              time: hour.time,
+              temp: {
+                c: Math.round(hour.temp.c) + '&deg;',
+                f: Math.round(hour.temp.f) + '&deg;',
+              },
+              condition: { iconUrl: hour.condition.iconUrl },
+            };
+          }),
         };
 
         return `

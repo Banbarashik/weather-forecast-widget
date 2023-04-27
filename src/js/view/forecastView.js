@@ -26,7 +26,7 @@ class ForecastView extends View {
 
   _generateMarkup() {
     return this._data
-      .map(function (dayOfWeek) {
+      .map(dayOfWeek => {
         const displayData = {
           dayName: getDayName(new Date(dayOfWeek.date)),
           temp: {
@@ -57,12 +57,32 @@ class ForecastView extends View {
             <h3 class="weather-summary__day-name">${displayData.dayName}</h3>
             <img class="weather-summary__icon" src="${displayData.iconUrl}">
             <p class="weather-summary__temp">
-              <span class="weather-summary__temp_min">${displayData.temp.min.c}</span>
-              <span class="weather-summary__temp_max">${displayData.temp.max.c}</span>
+              <span class="weather-summary__temp_min">${
+                displayData.temp.min.c
+              }</span>
+              <span class="weather-summary__temp_max">${
+                displayData.temp.max.c
+              }</span>
             </p>
-            TODO markup for each hour's forecast
+            <ul class="weather-hourly">
+              ${this._generateHourlyForecast(displayData.hourly)}
+            </ul>
           </li>
         `;
+      })
+      .join('');
+  }
+
+  _generateHourlyForecast(hourly) {
+    return hourly
+      .map(function (hour) {
+        return `
+        <li class="weather-hourly__hour">
+          <span>${hour.time['24hrFormat']}</span>
+          <span><img src="${hour.condition.iconUrl}"></span>
+          <span>${hour.temp.c}</span>
+        </li>
+      `;
       })
       .join('');
   }

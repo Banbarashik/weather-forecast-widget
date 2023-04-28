@@ -5,6 +5,7 @@ class ForecastView extends View {
   constructor() {
     super();
     this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
+    this._addHandlerCloseHourlyForecast(this._closeHourlyForecast.bind(this));
   }
 
   _data = [
@@ -86,11 +87,24 @@ class ForecastView extends View {
     const weatherSummary = e.target.closest('.weather-summary');
     const hourlyForecast = weatherSummary.querySelector('.weather-hourly');
 
-    hourlyForecast.style.display = 'block';
+    hourlyForecast.classList.add('active');
+    this._overlay.classList.remove('hidden');
+  }
+
+  _closeHourlyForecast() {
+    const hourlyForecast = this._parentElement.querySelector(
+      '.weather-hourly.active'
+    );
+
+    hourlyForecast.classList.remove('active');
+    this._overlay.classList.add('hidden');
   }
 
   _addHandlerOpenHourlyForecast(handler) {
     this._parentElement.addEventListener('click', handler);
+  }
+  _addHandlerCloseHourlyForecast(handler) {
+    this._overlay.addEventListener('click', handler);
   }
 
   _generateHourlyForecast(hourly) {

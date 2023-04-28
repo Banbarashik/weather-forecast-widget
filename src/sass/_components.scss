@@ -45,8 +45,12 @@
 .weather-hourly {
   display: none;
 
+  &.active {
+    display: block;
+  }
+
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   top: 0;
   left: 85%;
   transform: translateY(-50%);

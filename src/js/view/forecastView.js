@@ -4,11 +4,9 @@ import { getDayName } from '../helper';
 class ForecastView extends View {
   constructor() {
     super();
-
     this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
   }
 
-  _parentElement = document.getElementById('forecast');
   _data = [
     {
       date: '',
@@ -29,6 +27,9 @@ class ForecastView extends View {
       ],
     },
   ];
+
+  _parentElement = document.getElementById('forecast');
+  _overlay = document.getElementById('overlay');
 
   _generateMarkup() {
     return this._data
@@ -96,12 +97,12 @@ class ForecastView extends View {
     return hourly
       .map(function (hour) {
         return `
-        <li class="weather-hourly__hour">
-          <span>${hour.time['24hrFormat']}</span>
-          <img src="${hour.condition.iconUrl}">
-          <span>${hour.temp.c}</span>
-        </li>
-      `;
+          <li class="weather-hourly__hour">
+            <span>${hour.time['24hrFormat']}</span>
+            <img src="${hour.condition.iconUrl}">
+            <span>${hour.temp.c}</span>
+          </li>
+        `;
       })
       .join('');
   }

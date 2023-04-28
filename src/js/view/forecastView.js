@@ -79,7 +79,7 @@ class ForecastView extends View {
         return `
         <li class="weather-hourly__hour">
           <span>${hour.time['24hrFormat']}</span>
-          <span><img src="${hour.condition.iconUrl}"></span>
+          <img src="${hour.condition.iconUrl}">
           <span>${hour.temp.c}</span>
         </li>
       `;

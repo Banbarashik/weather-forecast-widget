@@ -2,6 +2,12 @@ import View from './View';
 import { getDayName } from '../helper';
 
 class ForecastView extends View {
+  constructor() {
+    super();
+
+    this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
+  }
+
   _parentElement = document.getElementById('forecast');
   _data = [
     {
@@ -71,6 +77,19 @@ class ForecastView extends View {
         `;
       })
       .join('');
+  }
+
+  _openHourlyForecast(e) {
+    if (e.target === this._parentElement) return;
+
+    const weatherSummary = e.target.closest('.weather-summary');
+    const hourlyForecast = weatherSummary.querySelector('.weather-hourly');
+
+    hourlyForecast.style.display = 'block';
+  }
+
+  _addHandlerOpenHourlyForecast(handler) {
+    this._parentElement.addEventListener('click', handler);
   }
 
   _generateHourlyForecast(hourly) {

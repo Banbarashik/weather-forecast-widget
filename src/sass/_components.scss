@@ -43,6 +43,8 @@
 }
 
 .weather-hourly {
+  display: none;
+
   position: absolute;
   z-index: 1;
   top: 0;
@@ -67,14 +69,4 @@
       width: 32px;
     }
   }
-
-  //* TEMPORARY
-  display: none;
-}
-
-.weather-summary:first-of-type .weather-hourly {
-  //* TEMPORARY
-  display: block;
-
-  // opacity: 0.5;
 }

@@ -25,6 +25,10 @@
   gap: 24px;
 
   list-style: none;
+
+  .weather-summary {
+    cursor: pointer;
+  }
 }
 
 .weather-summary {
@@ -61,6 +65,8 @@
 
   background-color: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  cursor: default;
 
   &__hour {
     display: flex;

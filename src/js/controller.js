@@ -5,6 +5,7 @@ import * as model from './model';
 import searchView from './view/searchView';
 import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
+import unitSwitchView from './view/unitSwitchView';
 
 async function controlSearch(query) {
   await model.loadSearchSuggestions(query);
@@ -26,5 +27,10 @@ async function controlForecast(index) {
   forecastView.render(model.state.weather.forecast);
 }
 
+function controlUnitToggle() {
+  model.toggleUnit();
+}
+
 searchView.addHandlerShowSearchSuggestions(controlSearch);
 searchView.addHandlerShowForecast(controlForecast);
+unitSwitchView.addHandlerToggleUnit(controlUnitToggle);

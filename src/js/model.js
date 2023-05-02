@@ -1,4 +1,10 @@
-import { API_URL, API_KEY, FORECAST_NUM_OF_DAYS } from './config';
+import {
+  API_URL,
+  API_KEY,
+  FORECAST_NUM_OF_DAYS,
+  CELSIUS_UNIT,
+  FAHRENHEIT_UNIT,
+} from './config';
 import {
   fetchAndParse,
   getHourIn24hrFormat,
@@ -7,6 +13,7 @@ import {
 
 export const state = {
   searchSuggestions: [],
+  displayUnit: 'c',
   weather: {
     location: {
       name: '',
@@ -37,6 +44,11 @@ export const state = {
     ],
   },
 };
+
+export function toggleUnit() {
+  if (state.displayUnit === 'c') state.displayUnit = 'f';
+  else if (state.displayUnit === 'f') state.displayUnit = 'c';
+}
 
 export async function loadSearchSuggestions(query) {
   state.searchSuggestions = await fetchAndParse(

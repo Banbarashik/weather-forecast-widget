@@ -21,14 +21,28 @@ async function controlForecast(index) {
   searchView.render(model.state.searchSuggestions);
 
   weatherNow.render({
+    displayUnit: model.state.displayUnit,
     location: model.state.weather.location,
     now: model.state.weather.now,
   });
-  forecastView.render(model.state.weather.forecast);
+  forecastView.render({
+    displayUnit: model.state.displayUnit,
+    forecast: model.state.weather.forecast,
+  });
 }
 
 function controlUnitToggle() {
   model.toggleUnit();
+
+  weatherNow.render({
+    displayUnit: model.state.displayUnit,
+    location: model.state.weather.location,
+    now: model.state.weather.now,
+  });
+  forecastView.render({
+    displayUnit: model.state.displayUnit,
+    forecast: model.state.weather.forecast,
+  });
 }
 
 searchView.addHandlerShowSearchSuggestions(controlSearch);

@@ -1,5 +1,4 @@
 import View from './View';
-import { getDayName } from '../helper';
 
 class ForecastView extends View {
   constructor() {
@@ -8,73 +7,80 @@ class ForecastView extends View {
     this._addHandlerCloseHourlyForecast(this._closeHourlyForecast.bind(this));
   }
 
-  _data = [
-    {
-      date: '',
-      temp: {
-        min: { c: 0, f: 0 },
-        max: { c: 0, f: 0 },
-      },
-      iconUrl: '',
-      hourly: [
-        {
-          time: {
-            '24hrFormat': '',
-            '12hrFormat': '',
-          },
-          temp: { c: 0, f: 0 },
-          condition: { iconUrl: '' },
-        },
-      ],
-    },
-  ];
-
   _parentElement = document.getElementById('forecast');
   _overlay = document.getElementById('overlay');
 
-  _generateMarkup() {
-    return this._data
-      .map(dayOfWeek => {
-        const displayData = {
-          dayName: getDayName(new Date(dayOfWeek.date)),
-          temp: {
-            min: {
-              c: Math.round(dayOfWeek.temp.min.c) + '&deg;',
-              f: Math.round(dayOfWeek.temp.min.f) + '&deg;',
+  _data = {
+    displayUnit: '',
+    forecast: [
+      {
+        date: '',
+        displayDate: '',
+        temp: {
+          min: { c: 0, displayC: '0&deg;', f: 0, displayF: '0&deg;' },
+          max: { c: 0, displayC: '0&deg;', f: 0, displayF: '0&deg;' },
+        },
+        iconUrl: '',
+        hourly: [
+          {
+            time: {
+              '24hrFormat': '',
+              '12hrFormat': '',
             },
-            max: {
-              c: Math.round(dayOfWeek.temp.max.c) + '&deg;',
-              f: Math.round(dayOfWeek.temp.max.f) + '&deg;',
+            temp: {
+              c: 0,
+              displayC: '0&deg;',
+              f: 0,
+              displayF: '0&deg;',
             },
+            condition: { iconUrl: '' },
           },
-          iconUrl: dayOfWeek.iconUrl,
-          hourly: dayOfWeek.hourly.map(function (hour) {
-            return {
-              time: hour.time,
-              temp: {
-                c: Math.round(hour.temp.c) + '&deg;',
-                f: Math.round(hour.temp.f) + '&deg;',
-              },
-              condition: { iconUrl: hour.condition.iconUrl },
-            };
-          }),
-        };
+        ],
+      },
+    ],
+  };
+
+  _generateMarkup() {
+    return this._data.forecast
+      .map(day => {
+        const date = day.displayDate;
+        const icon = day.iconUrl;
+        const minTemp = day.temp.min['display' + this._data.displayUnit];
+        const maxTemp = day.temp.max['display' + this._data.displayUnit];
+        const hourly = this._generateHourlyForecast(day.hourly);
 
         return `
           <li class="weather-summary">
-            <h3 class="weather-summary__day-name">${displayData.dayName}</h3>
-            <img class="weather-summary__icon" src="${displayData.iconUrl}">
+            <h3 class="weather-summary__day-name">${date}</h3>
+            <img class="weather-summary__icon" src="${icon}">
             <p class="weather-summary__temp">
-              <span class="weather-summary__temp_min">${
-                displayData.temp.min.c
-              }</span>
-              <span class="weather-summary__temp_max">${
-                displayData.temp.max.c
-              }</span>
+              <span class="weather-summary__temp_min">${minTemp}</span>
+              <span class="weather-summary__temp_max">${maxTemp}</span>
             </p>
             <ul class="weather-hourly">
-              ${this._generateHourlyForecast(displayData.hourly)}
+              ${hourly}
             </ul>
+          </li>
+        `;
+      })
+      .join('');
+  }
+
+  _generateHourlyForecast(hourly) {
+    return hourly
+      .map(hour => {
+        const time =
+          hour.time[
+            this._data.displayUnit === 'C' ? '24hrFormat' : '12hrFormat'
+          ];
+        const icon = hour.condition.iconUrl;
+        const temp = hour.temp['display' + this._data.displayUnit];
+
+        return `
+          <li class="weather-hourly__hour">
+            <span>${time}</span>
+            <img src="${icon}">
+            <span>${temp}</span>
           </li>
         `;
       })
@@ -105,20 +111,6 @@ class ForecastView extends View {
   }
   _addHandlerCloseHourlyForecast(handler) {
     this._overlay.addEventListener('click', handler);
-  }
-
-  _generateHourlyForecast(hourly) {
-    return hourly
-      .map(function (hour) {
-        return `
-          <li class="weather-hourly__hour">
-            <span>${hour.time['24hrFormat']}</span>
-            <img src="${hour.condition.iconUrl}">
-            <span>${hour.temp.c}</span>
-          </li>
-        `;
-      })
-      .join('');
   }
 }
 

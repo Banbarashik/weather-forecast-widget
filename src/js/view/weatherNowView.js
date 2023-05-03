@@ -1,66 +1,58 @@
 import View from './View';
-import { formatDate } from '../helper';
 
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
   _data = {
+    displayUnit: '',
     location: {
       name: '',
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
       localtime: '',
+      displayLocaltime: '',
     },
     now: {
       temp: {
         c: 0,
+        displayC: '0&deg;C',
         f: 0,
-        feelsLike: { c: 0, f: 0 },
+        displayF: '0&deg;F',
+        feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
       condition: { text: '', iconUrl: '' },
-      wind: { kmh: 0, mph: 0 },
+      wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
   };
 
   _generateMarkup() {
-    const {
-      location: { name, country, localtime },
-      now: { temp, condition, wind },
-    } = this._data;
-
-    const displayData = {
-      location: `${name}, ${country}`,
-      localtime: formatDate(new Date(localtime)),
-      temp: {
-        c: Math.round(temp.c) + '&deg;C',
-        f: Math.round(temp.f) + '&deg;F',
-        feelsLike: {
-          c: Math.round(temp.feelsLike.c) + '&deg;C',
-          f: Math.round(temp.feelsLike.f) + '&deg;F',
-        },
-      },
-      wind: {
-        kmh: Math.round(wind.kmh) + ' km/h',
-        mph: Math.round(wind.mph) + ' mph',
-      },
-      condition,
-    };
+    const location = `${this._data.location.name}, ${this._data.location.country}`;
+    const time = this._data.location.displayLocaltime;
+    const temp = this._data.now.temp['display' + this._data.displayUnit];
+    const feelsLike =
+      this._data.now.temp.feelsLike['display' + this._data.displayUnit];
+    const wind =
+      this._data.now.wind[
+        'display_' + (this._data.displayUnit === 'C' ? 'kmh' : 'mph')
+      ];
+    const condition = this._data.now.condition.text;
+    const icon = this._data.now.condition.iconUrl;
 
     return `
       <div class="weather-summary">
         <h3 class="weather-summary__day-name">Now</h3>
-        <img class="weather-summary__icon" src="${displayData.condition.iconUrl}">
+        <img class="weather-summary__icon" src="${icon}">
         <p class="weather-summary__temp">
-          <span class="weather-summary__temp_now">${displayData.temp.c}</span>
+          <span class="weather-summary__temp_now">${temp}</span>
         </p>
       </div>
 
       <div class="weather-extra-info">
-        <p class="weather-extra-info__location">${displayData.location}</p>
-        <p class="weather-extra-info__localtime">${displayData.localtime}</p>
-        <p class="weather-extra-info__condition">${displayData.condition.text}</p>
-        <p class="weather-extra-info__wind-speed">Wind: ${displayData.wind.kmh}</p>
-        <p class="weather-extra-info__feels-like-temp">Feels like: ${displayData.temp.feelsLike.c}</p>
+        <p class="weather-extra-info__location">${location}</p>
+        <p class="weather-extra-info__localtime">${time}</p>
+        <p class="weather-extra-info__condition">${condition}</p>
+        <p class="weather-extra-info__wind-speed">Wind: ${wind}</p>
+        <p class="weather-extra-info__feels-like-temp">Feels like: ${feelsLike}</p>
       </div>
     `;
   }

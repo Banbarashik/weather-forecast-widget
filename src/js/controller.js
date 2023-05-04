@@ -21,26 +21,30 @@ async function controlForecast(index) {
   searchView.render(model.state.searchSuggestions);
 
   weatherNow.render({
-    displayUnit: model.state.displayUnit,
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
     location: model.state.weather.location,
     now: model.state.weather.now,
   });
   forecastView.render({
-    displayUnit: model.state.displayUnit,
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
     forecast: model.state.weather.forecast,
   });
 }
 
 function controlUnitToggle() {
-  model.toggleUnit();
+  model.toggleUnits();
 
   weatherNow.render({
-    displayUnit: model.state.displayUnit,
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
     location: model.state.weather.location,
     now: model.state.weather.now,
   });
   forecastView.render({
-    displayUnit: model.state.displayUnit,
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
     forecast: model.state.weather.forecast,
   });
 }

@@ -11,7 +11,11 @@ class ForecastView extends View {
   _overlay = document.getElementById('overlay');
 
   _data = {
-    displayUnit: '',
+    displayUnits: {
+      temp: '',
+      wind: '',
+      time: '',
+    },
     forecast: [
       {
         date: '',
@@ -23,7 +27,8 @@ class ForecastView extends View {
         iconUrl: '',
         hourly: [
           {
-            time: {
+            time: '',
+            displayTime: {
               '24hrFormat': '',
               '12hrFormat': '',
             },
@@ -40,13 +45,23 @@ class ForecastView extends View {
     ],
   };
 
+  _getDisplayTemp(obj, unit) {
+    return obj['display' + unit];
+  }
+
   _generateMarkup() {
     return this._data.forecast
       .map(day => {
         const date = day.displayDate;
         const icon = day.iconUrl;
-        const minTemp = day.temp.min['display' + this._data.displayUnit];
-        const maxTemp = day.temp.max['display' + this._data.displayUnit];
+        const minTemp = this._getDisplayTemp(
+          day.temp.min,
+          this._data.displayUnits.temp
+        );
+        const maxTemp = this._getDisplayTemp(
+          day.temp.max,
+          this._data.displayUnits.temp
+        );
         const hourly = this._generateHourlyForecast(day.hourly);
 
         return `
@@ -57,9 +72,7 @@ class ForecastView extends View {
               <span class="weather-summary__temp_min">${minTemp}</span>
               <span class="weather-summary__temp_max">${maxTemp}</span>
             </p>
-            <ul class="weather-hourly">
-              ${hourly}
-            </ul>
+            <ul class="weather-hourly">${hourly}</ul>
           </li>
         `;
       })
@@ -69,12 +82,12 @@ class ForecastView extends View {
   _generateHourlyForecast(hourly) {
     return hourly
       .map(hour => {
-        const time =
-          hour.time[
-            this._data.displayUnit === 'C' ? '24hrFormat' : '12hrFormat'
-          ];
+        const time = hour.displayTime[this._data.displayUnits.time];
         const icon = hour.condition.iconUrl;
-        const temp = hour.temp['display' + this._data.displayUnit];
+        const temp = this._getDisplayTemp(
+          hour.temp,
+          this._data.displayUnits.temp
+        );
 
         return `
           <li class="weather-hourly__hour">

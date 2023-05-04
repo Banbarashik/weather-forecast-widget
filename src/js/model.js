@@ -4,6 +4,10 @@ import {
   FORECAST_NUM_OF_DAYS,
   CELSIUS_UNIT,
   FAHRENHEIT_UNIT,
+  KILOMETRE_PER_HOUR_UNIT,
+  MILE_PER_HOUR_UNIT,
+  TWENTY_FOUR_HOURS_FORMAT,
+  TWELVE_HOURS_FORMAT,
 } from './config';
 import {
   fetchAndParse,
@@ -15,7 +19,11 @@ import {
 
 export const state = {
   searchSuggestions: [],
-  displayUnit: CELSIUS_UNIT,
+  displayUnits: {
+    temp: CELSIUS_UNIT,
+    wind: KILOMETRE_PER_HOUR_UNIT,
+    time: TWENTY_FOUR_HOURS_FORMAT,
+  },
   weather: {
     location: {
       name: '',
@@ -23,7 +31,10 @@ export const state = {
       country: '',
       coords: { lat: 0, lon: 0 },
       localtime: '',
-      displayLocaltime: '',
+      displayLocaltime: {
+        [TWENTY_FOUR_HOURS_FORMAT]: '',
+        [TWELVE_HOURS_FORMAT]: '',
+      },
     },
     now: {
       temp: {
@@ -47,9 +58,10 @@ export const state = {
         iconUrl: '',
         hourly: [
           {
-            time: {
-              '24hrFormat': '',
-              '12hrFormat': '',
+            time: '',
+            displayTime: {
+              [TWENTY_FOUR_HOURS_FORMAT]: '',
+              [TWELVE_HOURS_FORMAT]: '',
             },
             temp: {
               c: 0,
@@ -65,9 +77,20 @@ export const state = {
   },
 };
 
-export const toggleUnit = () =>
-  (state.displayUnit =
-    state.displayUnit === CELSIUS_UNIT ? FAHRENHEIT_UNIT : CELSIUS_UNIT);
+export function toggleUnits() {
+  if (state.displayUnits.temp === CELSIUS_UNIT) {
+    state.displayUnits.temp = FAHRENHEIT_UNIT;
+    state.displayUnits.wind = MILE_PER_HOUR_UNIT;
+    state.displayUnits.time = TWELVE_HOURS_FORMAT;
+    return;
+  }
+
+  if (state.displayUnits.temp === FAHRENHEIT_UNIT) {
+    state.displayUnits.temp = CELSIUS_UNIT;
+    state.displayUnits.wind = KILOMETRE_PER_HOUR_UNIT;
+    state.displayUnits.time = TWENTY_FOUR_HOURS_FORMAT;
+  }
+}
 
 export async function loadSearchSuggestions(query) {
   state.searchSuggestions = await fetchAndParse(
@@ -95,7 +118,16 @@ export async function loadForecast(index) {
       lon: forecast.location.lon,
     },
     localtime: forecast.location.localtime,
-    displayLocaltime: formatDate(new Date(forecast.location.localtime)),
+    displayLocaltime: {
+      [TWENTY_FOUR_HOURS_FORMAT]: formatDate(
+        new Date(forecast.location.localtime),
+        TWENTY_FOUR_HOURS_FORMAT
+      ),
+      [TWELVE_HOURS_FORMAT]: formatDate(
+        new Date(forecast.location.localtime),
+        TWELVE_HOURS_FORMAT
+      ),
+    },
   };
 
   const formattedWeatherNowObject = {
@@ -118,9 +150,15 @@ export async function loadForecast(index) {
     },
     wind: {
       kmh: forecast.current.wind_kph,
-      display_kmh: Math.round(forecast.current.wind_kph) + ' km/h',
+      display_kmh:
+        Math.round(forecast.current.wind_kph) +
+        ' ' +
+        KILOMETRE_PER_HOUR_UNIT.slice(0, 2) +
+        '/' +
+        KILOMETRE_PER_HOUR_UNIT.slice(2),
       mph: forecast.current.wind_mph,
-      display_mph: Math.round(forecast.current.wind_mph) + ' mph',
+      display_mph:
+        Math.round(forecast.current.wind_mph) + ' ' + MILE_PER_HOUR_UNIT,
     },
   };
 
@@ -149,9 +187,12 @@ export async function loadForecast(index) {
       iconUrl: day.condition.icon,
       hourly: hours.map(function (hour) {
         return {
-          time: {
-            '24hrFormat': getHourIn24hrFormat(new Date(hour.time)),
-            '12hrFormat': getHourIn12hrFormat(new Date(hour.time)),
+          time: hour.time,
+          displayTime: {
+            [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(
+              new Date(hour.time)
+            ),
+            [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(hour.time)),
           },
           temp: {
             c: hour.temp_c,
@@ -164,14 +205,6 @@ export async function loadForecast(index) {
       }),
     };
   });
-
-  console.log(formattedLocationObject);
-  console.log(formattedWeatherNowObject);
-  console.log(formatedForecastArray);
-  console.log(
-    formatedForecastArray[0].hourly[0].time['24hrFormat'],
-    formatedForecastArray[0].hourly[0].time['12hrFormat']
-  );
 
   state.weather.location = formattedLocationObject;
   state.weather.now = formattedWeatherNowObject;

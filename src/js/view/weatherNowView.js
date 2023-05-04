@@ -2,15 +2,23 @@ import View from './View';
 
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
+
   _data = {
-    displayUnit: '',
+    displayUnits: {
+      temp: '',
+      wind: '',
+      time: '',
+    },
     location: {
       name: '',
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
       localtime: '',
-      displayLocaltime: '',
+      displayLocaltime: {
+        '24hrFormat': '',
+        '12hrFormat': '',
+      },
     },
     now: {
       temp: {
@@ -25,16 +33,25 @@ class WeatherNow extends View {
     },
   };
 
+  _getDisplayTemp(obj, unit) {
+    return obj['display' + unit];
+  }
+
   _generateMarkup() {
+    console.log(this._data.location.displayLocaltime);
+
     const location = `${this._data.location.name}, ${this._data.location.country}`;
-    const time = this._data.location.displayLocaltime;
-    const temp = this._data.now.temp['display' + this._data.displayUnit];
-    const feelsLike =
-      this._data.now.temp.feelsLike['display' + this._data.displayUnit];
-    const wind =
-      this._data.now.wind[
-        'display_' + (this._data.displayUnit === 'C' ? 'kmh' : 'mph')
-      ];
+    const time =
+      this._data.location.displayLocaltime[this._data.displayUnits.time];
+    const temp = this._getDisplayTemp(
+      this._data.now.temp,
+      this._data.displayUnits.temp
+    );
+    const feelsLike = this._getDisplayTemp(
+      this._data.now.temp.feelsLike,
+      this._data.displayUnits.temp
+    );
+    const wind = this._data.now.wind['display_' + this._data.displayUnits.wind];
     const condition = this._data.now.condition.text;
     const icon = this._data.now.condition.iconUrl;
 

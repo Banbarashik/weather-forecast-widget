@@ -102,6 +102,109 @@ export function resetSearchSuggestions() {
   state.searchSuggestions = [];
 }
 
+function formatLocationObj({ name, region, country, lat, lon, localtime }) {
+  return {
+    name,
+    region,
+    country,
+    coords: { lat, lon },
+    localtime,
+    displayLocaltime: {
+      [TWENTY_FOUR_HOURS_FORMAT]: formatDate(
+        new Date(localtime),
+        TWENTY_FOUR_HOURS_FORMAT
+      ),
+      [TWELVE_HOURS_FORMAT]: formatDate(
+        new Date(localtime),
+        TWELVE_HOURS_FORMAT
+      ),
+    },
+  };
+}
+
+function formatWeatherNowObj({
+  temp_c,
+  temp_f,
+  feelsLike_c,
+  feelsLike_f,
+  wind_kph,
+  wind_mph,
+  condition,
+}) {
+  const displayC = Math.round(temp_c) + '&deg;' + CELSIUS_UNIT;
+  const displayF = Math.round(temp_f) + '&deg;' + FAHRENHEIT_UNIT;
+  const feelsLikeDisplayC = Math.round(feelsLike_c) + '&deg;' + CELSIUS_UNIT;
+  const feelsLikeDisplayF = Math.round(feelsLike_f) + '&deg;' + FAHRENHEIT_UNIT;
+  const display_kmh =
+    Math.round(wind_kph) +
+    ' ' +
+    KILOMETRE_PER_HOUR_UNIT.slice(0, 2) +
+    '/' +
+    KILOMETRE_PER_HOUR_UNIT.slice(2);
+  const display_mph = Math.round(wind_mph) + ' ' + MILE_PER_HOUR_UNIT;
+
+  return {
+    temp: {
+      c: temp_c,
+      displayC,
+      f: temp_f,
+      displayF,
+      feelsLike: {
+        c: feelsLike_c,
+        displayC: feelsLikeDisplayC,
+        f: feelsLike_f,
+        displayF: feelsLikeDisplayF,
+      },
+    },
+    condition: { text: condition.text, iconUrl: condition.icon },
+    wind: { kmh: wind_kph, display_kmh, mph: wind_mph, display_mph },
+  };
+}
+
+function formatForecastHourObj(obj) {
+  return {
+    time: obj.time,
+    displayTime: {
+      [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(new Date(obj.time)),
+      [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(obj.time)),
+    },
+    temp: {
+      c: obj.temp_c,
+      displayC: Math.round(obj.temp_c) + '&deg;',
+      f: obj.temp_f,
+      displayF: Math.round(obj.temp_f) + '&deg;',
+    },
+    condition: { iconUrl: obj.condition.icon },
+  };
+}
+
+const formatHourlyForecastArr = arr => arr.map(formatForecastHourObj);
+
+function formatForecastDayObj(obj) {
+  return {
+    date: obj.date,
+    displayDate: getDayName(new Date(obj.date)),
+    temp: {
+      min: {
+        c: obj.day.mintemp_c,
+        displayC: Math.round(obj.day.mintemp_c) + '&deg;',
+        f: obj.day.mintemp_f,
+        displayF: Math.round(obj.day.mintemp_f) + '&deg;',
+      },
+      max: {
+        c: obj.day.maxtemp_c,
+        displayC: Math.round(obj.day.maxtemp_c) + '&deg;',
+        f: obj.day.maxtemp_f,
+        displayF: Math.round(obj.day.maxtemp_f) + '&deg;',
+      },
+    },
+    iconUrl: obj.day.condition.icon,
+    hourly: formatHourlyForecastArr(obj.hour),
+  };
+}
+
+const formatForecastArr = arr => arr.map(formatForecastDayObj);
+
 export async function loadForecast(index) {
   const { lat, lon } = state.searchSuggestions[index];
 
@@ -109,104 +212,7 @@ export async function loadForecast(index) {
     `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
   );
 
-  const formattedLocationObject = {
-    name: forecast.location.name,
-    region: forecast.location.region,
-    country: forecast.location.country,
-    coords: {
-      lat: forecast.location.lat,
-      lon: forecast.location.lon,
-    },
-    localtime: forecast.location.localtime,
-    displayLocaltime: {
-      [TWENTY_FOUR_HOURS_FORMAT]: formatDate(
-        new Date(forecast.location.localtime),
-        TWENTY_FOUR_HOURS_FORMAT
-      ),
-      [TWELVE_HOURS_FORMAT]: formatDate(
-        new Date(forecast.location.localtime),
-        TWELVE_HOURS_FORMAT
-      ),
-    },
-  };
-
-  const formattedWeatherNowObject = {
-    temp: {
-      c: forecast.current.temp_c,
-      displayC: Math.round(forecast.current.temp_c) + '&deg;' + CELSIUS_UNIT,
-      f: forecast.current.temp_f,
-      displayF: Math.round(forecast.current.temp_f) + '&deg;' + FAHRENHEIT_UNIT,
-      feelsLike: {
-        c: forecast.current.temp_c,
-        displayC: Math.round(forecast.current.temp_c) + '&deg;' + CELSIUS_UNIT,
-        f: forecast.current.temp_f,
-        displayF:
-          Math.round(forecast.current.temp_f) + '&deg;' + FAHRENHEIT_UNIT,
-      },
-    },
-    condition: {
-      text: forecast.current.condition.text,
-      iconUrl: forecast.current.condition.icon,
-    },
-    wind: {
-      kmh: forecast.current.wind_kph,
-      display_kmh:
-        Math.round(forecast.current.wind_kph) +
-        ' ' +
-        KILOMETRE_PER_HOUR_UNIT.slice(0, 2) +
-        '/' +
-        KILOMETRE_PER_HOUR_UNIT.slice(2),
-      mph: forecast.current.wind_mph,
-      display_mph:
-        Math.round(forecast.current.wind_mph) + ' ' + MILE_PER_HOUR_UNIT,
-    },
-  };
-
-  const formatedForecastArray = forecast.forecast.forecastday.map(function ({
-    date,
-    day,
-    hour: hours,
-  }) {
-    return {
-      date: date,
-      displayDate: getDayName(new Date(date)),
-      temp: {
-        min: {
-          c: day.mintemp_c,
-          displayC: Math.round(day.mintemp_c) + '&deg;',
-          f: day.mintemp_f,
-          displayF: Math.round(day.mintemp_f) + '&deg;',
-        },
-        max: {
-          c: day.maxtemp_c,
-          displayC: Math.round(day.maxtemp_c) + '&deg;',
-          f: day.maxtemp_f,
-          displayF: Math.round(day.maxtemp_f) + '&deg;',
-        },
-      },
-      iconUrl: day.condition.icon,
-      hourly: hours.map(function (hour) {
-        return {
-          time: hour.time,
-          displayTime: {
-            [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(
-              new Date(hour.time)
-            ),
-            [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(hour.time)),
-          },
-          temp: {
-            c: hour.temp_c,
-            displayC: Math.round(hour.temp_c) + '&deg;',
-            f: hour.temp_f,
-            displayF: Math.round(hour.temp_f) + '&deg;',
-          },
-          condition: { iconUrl: hour.condition.icon },
-        };
-      }),
-    };
-  });
-
-  state.weather.location = formattedLocationObject;
-  state.weather.now = formattedWeatherNowObject;
-  state.weather.forecast = formatedForecastArray;
+  state.weather.location = formatLocationObj(forecast.location);
+  state.weather.now = formatWeatherNowObj(forecast.current);
+  state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
 }

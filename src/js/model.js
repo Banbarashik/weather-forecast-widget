@@ -15,6 +15,7 @@ import {
   getDayName,
   getHourIn24hrFormat,
   getHourIn12hrFormat,
+  formatTemp,
 } from './helper';
 
 export const state = {
@@ -131,10 +132,6 @@ function formatWeatherNowObj({
   wind_mph,
   condition,
 }) {
-  const displayC = Math.round(temp_c) + '&deg;' + CELSIUS_UNIT;
-  const displayF = Math.round(temp_f) + '&deg;' + FAHRENHEIT_UNIT;
-  const feelsLikeDisplayC = Math.round(feelsLike_c) + '&deg;' + CELSIUS_UNIT;
-  const feelsLikeDisplayF = Math.round(feelsLike_f) + '&deg;' + FAHRENHEIT_UNIT;
   const display_kmh =
     Math.round(wind_kph) +
     ' ' +
@@ -146,14 +143,14 @@ function formatWeatherNowObj({
   return {
     temp: {
       c: temp_c,
-      displayC,
+      displayC: formatTemp(temp_c, CELSIUS_UNIT),
       f: temp_f,
-      displayF,
+      displayF: formatTemp(temp_c, FAHRENHEIT_UNIT),
       feelsLike: {
         c: feelsLike_c,
-        displayC: feelsLikeDisplayC,
+        displayC: formatTemp(feelsLike_c, CELSIUS_UNIT),
         f: feelsLike_f,
-        displayF: feelsLikeDisplayF,
+        displayF: formatTemp(feelsLike_f, FAHRENHEIT_UNIT),
       },
     },
     condition: { text: condition.text, iconUrl: condition.icon },
@@ -170,9 +167,9 @@ function formatForecastHourObj(obj) {
     },
     temp: {
       c: obj.temp_c,
-      displayC: Math.round(obj.temp_c) + '&deg;',
+      displayC: formatTemp(obj.temp_c),
       f: obj.temp_f,
-      displayF: Math.round(obj.temp_f) + '&deg;',
+      displayF: formatTemp(obj.temp_f),
     },
     condition: { iconUrl: obj.condition.icon },
   };
@@ -180,26 +177,26 @@ function formatForecastHourObj(obj) {
 
 const formatHourlyForecastArr = arr => arr.map(formatForecastHourObj);
 
-function formatForecastDayObj(obj) {
+function formatForecastDayObj({ day, date, hour }) {
   return {
-    date: obj.date,
-    displayDate: getDayName(new Date(obj.date)),
+    date,
+    displayDate: getDayName(new Date(date)),
     temp: {
       min: {
-        c: obj.day.mintemp_c,
-        displayC: Math.round(obj.day.mintemp_c) + '&deg;',
-        f: obj.day.mintemp_f,
-        displayF: Math.round(obj.day.mintemp_f) + '&deg;',
+        c: day.mintemp_c,
+        displayC: formatTemp(day.mintemp_c),
+        f: day.mintemp_f,
+        displayF: formatTemp(day.mintemp_f),
       },
       max: {
-        c: obj.day.maxtemp_c,
-        displayC: Math.round(obj.day.maxtemp_c) + '&deg;',
-        f: obj.day.maxtemp_f,
-        displayF: Math.round(obj.day.maxtemp_f) + '&deg;',
+        c: day.maxtemp_c,
+        displayC: formatTemp(day.maxtemp_c),
+        f: day.maxtemp_f,
+        displayF: formatTemp(day.maxtemp_f),
       },
     },
-    iconUrl: obj.day.condition.icon,
-    hourly: formatHourlyForecastArr(obj.hour),
+    iconUrl: day.condition.icon,
+    hourly: formatHourlyForecastArr(hour),
   };
 }
 

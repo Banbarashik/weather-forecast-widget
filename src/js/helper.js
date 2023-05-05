@@ -23,11 +23,13 @@ export const getHourIn12hrFormat = date => hourFormatter(true).format(date);
 
 export function formatDate(date, timeFormat) {
   const dayName = weekdays[date.getDay()];
-  // const time = date.getHours() + ':' + date.getMinutes();
-  const time = // date.getHours() + ':' + date.getMinutes();
+  const time =
     timeFormat === '24hrFormat'
       ? getHourIn24hrFormat(date)
       : getHourIn12hrFormat(date);
 
   return dayName + ' ' + time;
 }
+
+export const formatTemp = (temp, unit = '') =>
+  Math.round(temp) + '&deg;' + unit;

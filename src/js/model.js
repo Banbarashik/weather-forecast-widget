@@ -79,6 +79,9 @@ export const state = {
   },
 };
 
+// prettier-ignore
+export const resetSearchSuggestions = () => { state.searchSuggestions = [] };
+
 export function toggleUnits() {
   if (state.displayUnits.temp === CELSIUS_UNIT) {
     state.displayUnits.temp = FAHRENHEIT_UNIT;
@@ -100,8 +103,16 @@ export async function loadSearchSuggestions(query) {
   );
 }
 
-export function resetSearchSuggestions() {
-  state.searchSuggestions = [];
+export async function loadForecast(index) {
+  const { lat, lon } = state.searchSuggestions[index];
+
+  const forecast = await fetchAndParse(
+    `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
+  );
+
+  state.weather.location = formatLocationObj(forecast.location);
+  state.weather.now = formatWeatherNowObj(forecast.current);
+  state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {
@@ -158,58 +169,46 @@ function formatWeatherNowObj({
   };
 }
 
-function formatForecastHourObj(obj) {
-  return {
-    time: obj.time,
-    displayTime: {
-      [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(new Date(obj.time)),
-      [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(obj.time)),
-    },
-    temp: {
-      c: obj.temp_c,
-      displayC: formatTemp(obj.temp_c),
-      f: obj.temp_f,
-      displayF: formatTemp(obj.temp_f),
-    },
-    condition: { iconUrl: obj.condition.icon },
-  };
-}
-
-const formatHourlyForecastArr = arr => arr.map(formatForecastHourObj);
-
-function formatForecastDayObj({ day, date, hour }) {
-  return {
-    date,
-    displayDate: getDayName(new Date(date)),
-    temp: {
-      min: {
-        c: day.mintemp_c,
-        displayC: formatTemp(day.mintemp_c),
-        f: day.mintemp_f,
-        displayF: formatTemp(day.mintemp_f),
+const formatForecastArr = (function () {
+  function _formatForecastHourObj({ time, temp_c, temp_f, condition }) {
+    return {
+      time: time,
+      displayTime: {
+        [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(new Date(time)),
+        [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(time)),
       },
-      max: {
-        c: day.maxtemp_c,
-        displayC: formatTemp(day.maxtemp_c),
-        f: day.maxtemp_f,
-        displayF: formatTemp(day.maxtemp_f),
+      temp: {
+        c: temp_c,
+        displayC: formatTemp(temp_c),
+        f: temp_f,
+        displayF: formatTemp(temp_f),
       },
-    },
-    iconUrl: day.condition.icon,
-    hourly: formatHourlyForecastArr(hour),
-  };
-}
+      condition: { iconUrl: condition.icon },
+    };
+  }
 
-const formatForecastArr = arr => arr.map(formatForecastDayObj);
+  function _formatForecastDayObj({ day, date, hour }) {
+    return {
+      date,
+      displayDate: getDayName(new Date(date)),
+      temp: {
+        min: {
+          c: day.mintemp_c,
+          displayC: formatTemp(day.mintemp_c),
+          f: day.mintemp_f,
+          displayF: formatTemp(day.mintemp_f),
+        },
+        max: {
+          c: day.maxtemp_c,
+          displayC: formatTemp(day.maxtemp_c),
+          f: day.maxtemp_f,
+          displayF: formatTemp(day.maxtemp_f),
+        },
+      },
+      iconUrl: day.condition.icon,
+      hourly: hour.map(_formatForecastHourObj),
+    };
+  }
 
-export async function loadForecast(index) {
-  const { lat, lon } = state.searchSuggestions[index];
-
-  const forecast = await fetchAndParse(
-    `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
-  );
-
-  state.weather.location = formatLocationObj(forecast.location);
-  state.weather.now = formatWeatherNowObj(forecast.current);
-  state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
-}
+  return forecastArr => forecastArr.map(_formatForecastDayObj);
+})();

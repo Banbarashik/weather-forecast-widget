@@ -16,6 +16,7 @@ import {
   getHourIn24hrFormat,
   getHourIn12hrFormat,
   formatTemp,
+  formatWindSpeed,
 } from './helper';
 
 export const state = {
@@ -132,13 +133,7 @@ function formatWeatherNowObj({
   wind_mph,
   condition,
 }) {
-  const display_kmh =
-    Math.round(wind_kph) +
-    ' ' +
-    KILOMETRE_PER_HOUR_UNIT.slice(0, 2) +
-    '/' +
-    KILOMETRE_PER_HOUR_UNIT.slice(2);
-  const display_mph = Math.round(wind_mph) + ' ' + MILE_PER_HOUR_UNIT;
+  const [k, m, h] = KILOMETRE_PER_HOUR_UNIT;
 
   return {
     temp: {
@@ -154,7 +149,12 @@ function formatWeatherNowObj({
       },
     },
     condition: { text: condition.text, iconUrl: condition.icon },
-    wind: { kmh: wind_kph, display_kmh, mph: wind_mph, display_mph },
+    wind: {
+      kmh: wind_kph,
+      display_kmh: formatWindSpeed(wind_kph, `${k}${m}/${h}`),
+      mph: wind_mph,
+      display_mph: formatWindSpeed(wind_mph, MILE_PER_HOUR_UNIT),
+    },
   };
 }
 

@@ -33,3 +33,5 @@ export function formatDate(date, timeFormat) {
 
 export const formatTemp = (temp, unit = '') =>
   Math.round(temp) + '&deg;' + unit;
+
+export const formatWindSpeed = (speed, unit) => Math.round(speed) + ' ' + unit;

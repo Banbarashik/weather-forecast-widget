@@ -1,8 +1,4 @@
-import View from './View';
-
-class UnitToggleView extends View {
-  _data;
-
+class UnitToggleView {
   _parentElement = document.getElementById('unit-toggle');
   _input = this._parentElement.querySelector('input');
 

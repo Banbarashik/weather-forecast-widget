@@ -6,6 +6,7 @@ import searchView from './view/searchView';
 import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
 import unitSwitchView from './view/unitSwitchView';
+import getUserLocationView from './view/getUserLocationView';
 
 async function controlSearch(query) {
   await model.loadSearchSuggestions(query);
@@ -49,6 +50,23 @@ function controlUnitToggle() {
   });
 }
 
+async function controlGeolocation() {
+  await model.getLocation();
+
+  weatherNow.render({
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
+    location: model.state.weather.location,
+    now: model.state.weather.now,
+  });
+  forecastView.render({
+    displayUnits: model.state.displayUnits,
+    displayTimeFormat: model.state.displayTimeFormat,
+    forecast: model.state.weather.forecast,
+  });
+}
+
 searchView.addHandlerShowSearchSuggestions(controlSearch);
 searchView.addHandlerShowForecast(controlForecast);
 unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
+getUserLocationView.addHandlerGetLocation(controlGeolocation);

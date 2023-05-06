@@ -17,10 +17,12 @@ import {
   getHourIn12hrFormat,
   formatTemp,
   formatWindSpeed,
+  getLocationPromise,
 } from './helper';
 
 export const state = {
   searchSuggestions: [],
+  userLocation: { lat: 0, lon: 0 },
   displayUnits: {
     temp: CELSIUS_UNIT,
     wind: KILOMETRE_PER_HOUR_UNIT,
@@ -108,6 +110,23 @@ export async function loadForecast(index) {
 
   const forecast = await fetchAndParse(
     `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
+  );
+
+  state.weather.location = formatLocationObj(forecast.location);
+  state.weather.now = formatWeatherNowObj(forecast.current);
+  state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
+}
+
+export async function getLocation() {
+  const { coords } = await getLocationPromise();
+
+  state.userLocation = { lat: coords.latitude, lon: coords.longitude };
+
+  const forecast = await fetchAndParse(
+    `${API_URL}/forecast.json?` +
+      `key=${API_KEY}` +
+      `&q=${coords.latitude},${coords.longitude}` +
+      `&days=${FORECAST_NUM_OF_DAYS}`
   );
 
   state.weather.location = formatLocationObj(forecast.location);

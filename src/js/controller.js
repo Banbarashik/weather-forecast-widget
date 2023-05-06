@@ -16,10 +16,11 @@ async function controlSearch(query) {
 
 async function controlForecast(index) {
   const coords = model.getSearchSuggestionLocation(index);
-  await model.loadForecast(coords);
 
   model.resetSearchSuggestions();
   searchView.render(model.state.searchSuggestions);
+
+  await model.loadForecast(coords);
 
   weatherNow.render({
     displayUnits: model.state.displayUnits,

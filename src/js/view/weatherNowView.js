@@ -38,8 +38,6 @@ class WeatherNow extends View {
   }
 
   _generateMarkup() {
-    console.log(this._data.location.displayLocaltime);
-
     const location = `${this._data.location.name}, ${this._data.location.country}`;
     const time =
       this._data.location.displayLocaltime[this._data.displayUnits.time];

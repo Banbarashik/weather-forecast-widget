@@ -1,3 +1,22 @@
+#search__bar {
+  width: 300px;
+}
+
+#search__suggestions {
+  list-style: none;
+  background-color: yellowgreen;
+  color: white;
+  cursor: pointer;
+}
+
+.search__suggestion {
+  padding: 15px;
+
+  &:hover {
+    background-color: darkgreen;
+  }
+}
+
 #weather-widget {
   display: flex;
   flex-direction: column;

@@ -21,7 +21,9 @@ import {
 } from './helper';
 
 export const state = {
-  searchSuggestions: [],
+  searchSuggestions: [
+    { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } },
+  ],
   userLocationCoords: { lat: 0, lon: 0 },
   displayUnits: {
     temp: CELSIUS_UNIT,
@@ -100,9 +102,17 @@ export function toggleUnits() {
 }
 
 export async function loadSearchSuggestions(query) {
-  state.searchSuggestions = await fetchAndParse(
+  const searchSuggestions = await fetchAndParse(
     `${API_URL}/search.json?key=${API_KEY}&q=${query}`
   );
+
+  state.searchSuggestions = formatSearchSuggestionsArr(searchSuggestions);
+}
+
+function formatSearchSuggestionsArr(arr) {
+  return arr.map(function ({ name, region, country, lat, lon }) {
+    return { name, region, country, coords: { lat, lon } };
+  });
 }
 
 export async function getUserLocation() {
@@ -112,10 +122,8 @@ export async function getUserLocation() {
   state.userLocationCoords = { lat: coords.latitude, lon: coords.longitude };
 }
 
-export function getSearchSuggestionLocation(index) {
-  const { lat, lon } = state.searchSuggestions[index];
-  return { lat, lon };
-}
+export const getSearchSuggestionLocation = index =>
+  state.searchSuggestions[index].coords;
 
 export async function loadForecast(coords = state.userLocationCoords) {
   const { location, current, forecast } = await fetchAndParse(

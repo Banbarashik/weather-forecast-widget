@@ -2,9 +2,9 @@ import View from './View';
 
 class SearchView extends View {
   _parentElement = document.getElementById('search__suggestions');
-  _data;
-
   _searchBar = document.getElementById('search__bar');
+
+  _data = { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } };
 
   addHandlerShowSearchSuggestions(handler) {
     this._searchBar.addEventListener('input', function (e) {
@@ -26,12 +26,15 @@ class SearchView extends View {
 
   _generateMarkup() {
     return this._data
-      .map(
-        ({ name, region, country }, i) =>
-          `<li class="search__suggestion" data-index="${i}">${name}, ${
-            region ? region + ',' : ''
-          } ${country}</li>`
-      )
+      .map(function (searchSuggestion, i) {
+        return `
+          <li class="search__suggestion" data-index="${i}">
+          ${searchSuggestion.name},
+          ${searchSuggestion.region ? searchSuggestion.region + ',' : ''}
+          ${searchSuggestion.country}
+          </li>
+        `;
+      })
       .join('');
   }
 }

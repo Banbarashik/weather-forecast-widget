@@ -105,11 +105,14 @@ export async function loadSearchSuggestions(query) {
   );
 }
 
-export async function loadForecast(index) {
+export function getLocation(index) {
   const { lat, lon } = state.searchSuggestions[index];
+  return { lat, lon };
+}
 
+export async function loadForecast(coords) {
   const forecast = await fetchAndParse(
-    `${API_URL}/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=${FORECAST_NUM_OF_DAYS}`
+    `${API_URL}/forecast.json?key=${API_KEY}&q=${coords.lat},${coords.lon}&days=${FORECAST_NUM_OF_DAYS}`
   );
 
   state.weather.location = formatLocationObj(forecast.location);
@@ -117,21 +120,10 @@ export async function loadForecast(index) {
   state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
 }
 
-export async function getLocation() {
+export async function getUserLocation() {
   const { coords } = await getLocationPromise();
 
   state.userLocation = { lat: coords.latitude, lon: coords.longitude };
-
-  const forecast = await fetchAndParse(
-    `${API_URL}/forecast.json?` +
-      `key=${API_KEY}` +
-      `&q=${coords.latitude},${coords.longitude}` +
-      `&days=${FORECAST_NUM_OF_DAYS}`
-  );
-
-  state.weather.location = formatLocationObj(forecast.location);
-  state.weather.now = formatWeatherNowObj(forecast.current);
-  state.weather.forecast = formatForecastArr(forecast.forecast.forecastday);
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {

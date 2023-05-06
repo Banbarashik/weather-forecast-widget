@@ -15,7 +15,8 @@ async function controlSearch(query) {
 }
 
 async function controlForecast(index) {
-  await model.loadForecast(index);
+  const coords = model.getLocation(index);
+  await model.loadForecast(coords);
 
   model.resetSearchSuggestions();
 
@@ -51,7 +52,8 @@ function controlUnitToggle() {
 }
 
 async function controlGeolocation() {
-  await model.getLocation();
+  await model.getUserLocation();
+  await model.loadForecast(model.state.userLocation);
 
   weatherNow.render({
     displayUnits: model.state.displayUnits,

@@ -15,11 +15,10 @@ async function controlSearch(query) {
 }
 
 async function controlForecast(index) {
-  const coords = model.getLocation(index);
+  const coords = model.getSearchSuggestionLocation(index);
   await model.loadForecast(coords);
 
   model.resetSearchSuggestions();
-
   searchView.render(model.state.searchSuggestions);
 
   weatherNow.render({
@@ -53,7 +52,7 @@ function controlUnitToggle() {
 
 async function controlGeolocation() {
   await model.getUserLocation();
-  await model.loadForecast(model.state.userLocation);
+  await model.loadForecast();
 
   weatherNow.render({
     displayUnits: model.state.displayUnits,

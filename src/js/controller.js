@@ -9,7 +9,8 @@ import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
 
 async function controlSearch(query) {
-  await model.loadSearchSuggestions(query);
+  if (!query) model.resetSearchSuggestions();
+  if (query) await model.loadSearchSuggestions(query);
 
   searchView.render(model.state.searchSuggestions);
 }
@@ -68,7 +69,7 @@ async function controlGeolocation() {
   });
 }
 
-searchView.addHandlerShowSearchSuggestions(controlSearch);
+searchView.addHandlerToggleSearchSuggestions(controlSearch);
 searchView.addHandlerShowForecast(controlForecast);
 unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);

@@ -6,9 +6,32 @@
 }
 
 #search__bar {
+  width: 300px;
+  padding: 10px;
   border: none;
   border-radius: 14px;
-  padding: 10px;
+}
+
+#search__suggestions {
+  position: absolute;
+  z-index: 1;
+
+  width: 300px;
+
+  list-style: none;
+
+  background-color: yellowgreen;
+  color: white;
+
+  cursor: pointer;
+}
+
+.search__suggestion {
+  padding: 15px;
+
+  &:hover {
+    background-color: darkgreen;
+  }
 }
 
 #get-user-location {

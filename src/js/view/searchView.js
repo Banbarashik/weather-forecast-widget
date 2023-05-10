@@ -7,11 +7,13 @@ class SearchView extends View {
   _data = { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } };
 
   addHandlerToggleSearchSuggestions(handler) {
-    this._searchBar.addEventListener('input', function (e) {
-      const { value: query } = e.target;
+    ['input', 'focus'].forEach(ev =>
+      this._searchBar.addEventListener(ev, function (e) {
+        const { value: query } = e.target;
 
-      handler(query);
-    });
+        handler(query);
+      })
+    );
 
     this._searchBar.addEventListener('blur', () => handler());
   }

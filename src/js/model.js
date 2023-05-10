@@ -21,9 +21,7 @@ import {
 } from './helper';
 
 export const state = {
-  searchSuggestions: [
-    { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } },
-  ],
+  searchSuggestions: [],
   userLocationCoords: { lat: 0, lon: 0 },
   displayUnits: {
     temp: CELSIUS_UNIT,
@@ -107,6 +105,8 @@ export async function loadSearchSuggestions(query) {
   );
 
   state.searchSuggestions = formatSearchSuggestionsArr(searchSuggestions);
+
+  return state.searchSuggestions;
 }
 
 function formatSearchSuggestionsArr(arr) {

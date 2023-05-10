@@ -4,18 +4,16 @@ class SearchView extends View {
   _parentElement = document.getElementById('search__suggestions');
   _searchBar = document.getElementById('search__bar');
 
-  _data = { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } };
+  _data = [{ name: '', region: '', country: '', coords: { lat: 0, lon: 0 } }];
 
-  addHandlerToggleSearchSuggestions(handler) {
-    ['input', 'focus'].forEach(ev =>
-      this._searchBar.addEventListener(ev, function (e) {
-        const { value: query } = e.target;
-
-        handler(query);
-      })
-    );
-
-    this._searchBar.addEventListener('blur', () => handler());
+  addHandlerSearchOnInput(handler) {
+    this._searchBar.addEventListener('input', e => handler(e.target.value));
+  }
+  addHandlerSearchOnBlur(handler) {
+    this._searchBar.addEventListener('blur', handler);
+  }
+  addHandlerSearchOnFocus(handler) {
+    this._searchBar.addEventListener('focus', handler);
   }
 
   addHandlerShowForecast(handler) {

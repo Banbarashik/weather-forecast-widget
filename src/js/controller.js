@@ -8,18 +8,16 @@ import forecastView from './view/forecastView';
 import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
 
-async function controlSearch(query) {
-  if (!query) model.resetSearchSuggestions();
-  if (query) await model.loadSearchSuggestions(query);
-
+const controlSearchOnInput = async query =>
+  searchView.render(await model.loadSearchSuggestions(query));
+const controlSearchOnBlur = () => searchView.render([]);
+const controlSearchOnFocus = () =>
   searchView.render(model.state.searchSuggestions);
-}
 
 async function controlForecast(index) {
   const coords = model.getSearchSuggestionLocation(index);
 
-  model.resetSearchSuggestions();
-  searchView.render(model.state.searchSuggestions);
+  searchView.render([]);
 
   await model.loadForecast(coords);
 
@@ -69,7 +67,9 @@ async function controlGeolocation() {
   });
 }
 
-searchView.addHandlerToggleSearchSuggestions(controlSearch);
+searchView.addHandlerSearchOnInput(controlSearchOnInput);
+searchView.addHandlerSearchOnBlur(controlSearchOnBlur);
+searchView.addHandlerSearchOnFocus(controlSearchOnFocus);
 searchView.addHandlerShowForecast(controlForecast);
 unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);

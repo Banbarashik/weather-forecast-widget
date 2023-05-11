@@ -54,7 +54,7 @@ export const state = {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', iconUrl: '' },
+      condition: { text: '', code: 0, iconUrl: '', videoUrl: '' },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
     forecast: [
@@ -147,6 +147,8 @@ export async function loadForecast(coords = state.userLocationCoords) {
   state.weather.forecast = formatForecastArr(forecast.forecastday);
 
   state.isLocationLoaded = true;
+
+  console.log(state.weather.now);
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {
@@ -167,6 +169,17 @@ function formatLocationObj({ name, region, country, lat, lon, localtime }) {
       ),
     },
   };
+}
+
+function getBGUrl(code) {
+  switch (code) {
+    case 1006:
+      return Cloudy;
+      break;
+
+    default:
+      break;
+  }
 }
 
 function formatWeatherNowObj({
@@ -193,7 +206,12 @@ function formatWeatherNowObj({
         displayF: formatTemp(feelslike_f, FAHRENHEIT_UNIT),
       },
     },
-    condition: { text: condition.text, iconUrl: condition.icon },
+    condition: {
+      text: condition.text,
+      code: condition.code,
+      iconUrl: condition.icon,
+      videoUrl: getBGUrl(condition.code),
+    },
     wind: {
       kmh: wind_kph,
       display_kmh: formatWindSpeed(wind_kph, `${k}${m}/${h}`),

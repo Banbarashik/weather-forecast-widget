@@ -4,21 +4,14 @@ class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
 
   _data = {
-    displayUnits: {
-      temp: '',
-      wind: '',
-      time: '',
-    },
+    displayUnits: { temp: '', wind: '', time: '' },
     location: {
       name: '',
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
       localtime: '',
-      displayLocaltime: {
-        '24hrFormat': '',
-        '12hrFormat': '',
-      },
+      displayLocaltime: { '24hrFormat': '', '12hrFormat': '' },
     },
     now: {
       temp: {
@@ -28,7 +21,7 @@ class WeatherNow extends View {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', iconUrl: '' },
+      condition: { text: '', code: 0, iconUrl: '', videoUrl: '' },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
   };

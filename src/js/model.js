@@ -21,7 +21,10 @@ import {
 } from './helper';
 
 export const state = {
-  searchSuggestions: [],
+  isLocationLoaded: false,
+  searchSuggestions: [
+    /* { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } } */
+  ],
   userLocationCoords: { lat: 0, lon: 0 },
   displayUnits: {
     temp: CELSIUS_UNIT,
@@ -139,6 +142,8 @@ export async function loadForecast(coords = state.userLocationCoords) {
   state.weather.location = formatLocationObj(location);
   state.weather.now = formatWeatherNowObj(current);
   state.weather.forecast = formatForecastArr(forecast.forecastday);
+
+  state.isLocationLoaded = true;
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {

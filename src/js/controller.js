@@ -40,6 +40,8 @@ async function controlForecast(index) {
 function controlUnitToggle() {
   model.toggleUnits();
 
+  if (!model.state.isLocationLoaded) return;
+
   weatherNow.render({
     displayUnits: model.state.displayUnits,
     displayTimeFormat: model.state.displayTimeFormat,

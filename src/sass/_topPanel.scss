@@ -6,17 +6,24 @@
 }
 
 #search__bar {
-  width: 300px;
+  position: relative;
+  z-index: 10;
+
+  width: 200px;
   padding: 10px;
   border: none;
   border-radius: 14px;
+
+  &:focus {
+    width: 350px;
+  }
 }
 
 #search__suggestions {
   position: absolute;
   z-index: 1;
 
-  width: 300px;
+  width: 350px;
 
   list-style: none;
 

@@ -8,8 +8,11 @@ import forecastView from './view/forecastView';
 import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
 
-const controlSearchOnInput = async query =>
-  searchView.render(await model.loadSearchSuggestions(query));
+async function controlSearchOnInput(query) {
+  await model.loadSearchSuggestions(query);
+
+  searchView.render(model.state.searchSuggestions);
+}
 const controlSearchOnBlur = () => searchView.render([]);
 const controlSearchOnFocus = () =>
   searchView.render(model.state.searchSuggestions);

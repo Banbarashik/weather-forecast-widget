@@ -100,13 +100,16 @@ export function toggleUnits() {
 }
 
 export async function loadSearchSuggestions(query) {
+  if (!query) {
+    state.searchSuggestions = [];
+    return;
+  }
+
   const searchSuggestions = await fetchAndParse(
     `${API_URL}/search.json?key=${API_KEY}&q=${query}`
   );
 
   state.searchSuggestions = formatSearchSuggestionsArr(searchSuggestions);
-
-  return state.searchSuggestions;
 }
 
 function formatSearchSuggestionsArr(arr) {

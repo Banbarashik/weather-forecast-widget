@@ -1,3 +1,6 @@
+import Cloudy from './../video/cloudy.mp4';
+console.log(Cloudy);
+
 import {
   API_URL,
   API_KEY,

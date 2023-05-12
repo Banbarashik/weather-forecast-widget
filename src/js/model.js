@@ -1,5 +1,4 @@
-import Cloudy from './../video/cloudy.mp4';
-console.log(Cloudy);
+const bgVideos = importAll(require.context('./../video', false));
 
 import {
   API_URL,
@@ -21,6 +20,7 @@ import {
   formatTemp,
   formatWindSpeed,
   getLocationPromise,
+  importAll,
 } from './helper';
 
 export const state = {
@@ -147,8 +147,6 @@ export async function loadForecast(coords = state.userLocationCoords) {
   state.weather.forecast = formatForecastArr(forecast.forecastday);
 
   state.isLocationLoaded = true;
-
-  console.log(state.weather.now);
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {
@@ -169,17 +167,6 @@ function formatLocationObj({ name, region, country, lat, lon, localtime }) {
       ),
     },
   };
-}
-
-function getBGUrl(code) {
-  switch (code) {
-    case 1006:
-      return Cloudy;
-      break;
-
-    default:
-      break;
-  }
 }
 
 function formatWeatherNowObj({
@@ -210,7 +197,7 @@ function formatWeatherNowObj({
       text: condition.text,
       code: condition.code,
       iconUrl: condition.icon,
-      videoUrl: getBGUrl(condition.code),
+      videoUrl: bgVideos[condition.code],
     },
     wind: {
       kmh: wind_kph,

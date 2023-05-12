@@ -62,6 +62,8 @@ class WeatherNow extends View {
         <p class="weather-extra-info__wind-speed">Wind: ${wind}</p>
         <p class="weather-extra-info__feels-like-temp">Feels like: ${feelsLike}</p>
       </div>
+
+      <video src="${this._data.now.condition.videoUrl}" autoplay loop></video>
     `;
   }
 }

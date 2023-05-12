@@ -7,7 +7,6 @@ import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
 import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
-import widgetView from './view/widgetView';
 
 async function controlSearchOnInput(query) {
   await model.loadSearchSuggestions(query);
@@ -36,8 +35,6 @@ async function controlForecast(index) {
     displayTimeFormat: model.state.displayTimeFormat,
     forecast: model.state.weather.forecast,
   });
-
-  widgetView.setBG(model.state.weather.now.condition.videoUrl);
 }
 
 function controlUnitToggle() {

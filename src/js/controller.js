@@ -38,8 +38,9 @@ async function controlForecast(index) {
   });
 }
 
-function controlHourlyForecast(index) {
+function controlHourlyForecast(index, coords) {
   hourlyForecastView.render({
+    coords,
     displayUnits: model.state.displayUnits,
     hourly: model.state.weather.forecast[index].hourly,
   });

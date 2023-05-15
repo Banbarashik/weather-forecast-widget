@@ -5,6 +5,7 @@ class hourlyForecastView extends View {
   _overlay = document.getElementById('overlay');
 
   _data = {
+    coords: { x: 0, y: 0 },
     displayUnits: {
       temp: '',
       wind: '',
@@ -33,7 +34,9 @@ class hourlyForecastView extends View {
   }
 
   _generateMarkup() {
-    return this._data.hourly
+    return `<ul style="left: ${this._data.coords.x}px; top: ${
+      this._data.coords.y
+    }px" class="weather-hourly">${this._data.hourly
       .map(hour => {
         const time = hour.displayTime[this._data.displayUnits.time];
         const icon = hour.condition.iconUrl;
@@ -43,14 +46,14 @@ class hourlyForecastView extends View {
         );
 
         return `
-        <li class="weather-hourly__hour">
-          <span>${time}</span>
-          <img src="${icon}">
-          <span>${temp}</span>
-        </li>
-      `;
+          <li class="weather-hourly__hour">
+            <span>${time}</span>
+            <img src="${icon}">
+            <span>${temp}</span>
+          </li>
+        `;
       })
-      .join('');
+      .join('')}</ul>`;
   }
 }
 

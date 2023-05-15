@@ -72,7 +72,6 @@ class ForecastView extends View {
               <span class="weather-summary__temp_min">${minTemp}</span>
               <span class="weather-summary__temp_max">${maxTemp}</span>
             </p>
-            <ul class="weather-hourly">${hourly}</ul>
           </li>
         `;
       })
@@ -117,7 +116,10 @@ class ForecastView extends View {
       const weatherSummary = e.target.closest('.weather-summary');
       const { index } = weatherSummary.dataset;
 
-      handler(index);
+      const { left: x, bottom: y } = weatherSummary.getBoundingClientRect();
+      const coords = { x, y };
+
+      handler(index, coords);
     });
   }
 

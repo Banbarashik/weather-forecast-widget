@@ -3,8 +3,8 @@ import View from './View';
 class ForecastView extends View {
   constructor() {
     super();
-    this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
-    this._addHandlerCloseHourlyForecast(this._closeHourlyForecast.bind(this));
+    // this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
+    // this._addHandlerCloseHourlyForecast(this._closeHourlyForecast.bind(this));
   }
 
   _parentElement = document.getElementById('forecast');
@@ -51,7 +51,7 @@ class ForecastView extends View {
 
   _generateMarkup() {
     return this._data.forecast
-      .map(day => {
+      .map((day, i) => {
         const date = day.displayDate;
         const icon = day.iconUrl;
         const minTemp = this._getDisplayTemp(
@@ -65,7 +65,7 @@ class ForecastView extends View {
         const hourly = this._generateHourlyForecast(day.hourly);
 
         return `
-          <li class="weather-summary">
+          <li class="weather-summary" data-index="${i}">
             <h3 class="weather-summary__day-name">${date}</h3>
             <img class="weather-summary__icon" src="${icon}">
             <p class="weather-summary__temp">
@@ -108,6 +108,17 @@ class ForecastView extends View {
 
     hourlyForecast.classList.add('active');
     this._overlay.classList.remove('hidden');
+  }
+
+  addHandlerOpenHourlyForecast(handler) {
+    this._parentElement.addEventListener('click', e => {
+      if (e.target === this._parentElement) return;
+
+      const weatherSummary = e.target.closest('.weather-summary');
+      const { index } = weatherSummary.dataset;
+
+      handler(index);
+    });
   }
 
   _closeHourlyForecast() {

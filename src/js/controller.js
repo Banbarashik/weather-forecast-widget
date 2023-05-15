@@ -7,6 +7,7 @@ import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
 import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
+import hourlyForecastView from './view/hourlyForecastView';
 
 async function controlSearchOnInput(query) {
   await model.loadSearchSuggestions(query);
@@ -34,6 +35,13 @@ async function controlForecast(index) {
     displayUnits: model.state.displayUnits,
     displayTimeFormat: model.state.displayTimeFormat,
     forecast: model.state.weather.forecast,
+  });
+}
+
+function controlHourlyForecast(index) {
+  hourlyForecastView.render({
+    displayUnits: model.state.displayUnits,
+    hourly: model.state.weather.forecast[index].hourly,
   });
 }
 
@@ -78,3 +86,4 @@ searchView.addHandlerSearchOnFocus(controlSearchOnFocus);
 searchView.addHandlerShowForecast(controlForecast);
 unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);
+forecastView.addHandlerOpenHourlyForecast(controlHourlyForecast);

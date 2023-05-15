@@ -42,13 +42,13 @@ function controlUnitToggle() {
 
   if (!model.state.isLocationLoaded) return;
 
-  weatherNow.render({
+  weatherNow.update({
     displayUnits: model.state.displayUnits,
     displayTimeFormat: model.state.displayTimeFormat,
     location: model.state.weather.location,
     now: model.state.weather.now,
   });
-  forecastView.render({
+  forecastView.update({
     displayUnits: model.state.displayUnits,
     displayTimeFormat: model.state.displayTimeFormat,
     forecast: model.state.weather.forecast,

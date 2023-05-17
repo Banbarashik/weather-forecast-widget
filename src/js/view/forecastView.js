@@ -1,12 +1,6 @@
 import View from './View';
 
 class ForecastView extends View {
-  constructor() {
-    super();
-    // this._addHandlerOpenHourlyForecast(this._openHourlyForecast.bind(this));
-    // this._addHandlerCloseHourlyForecast(this._closeHourlyForecast.bind(this));
-  }
-
   _parentElement = document.getElementById('forecast');
   _overlay = document.getElementById('overlay');
 
@@ -62,10 +56,9 @@ class ForecastView extends View {
           day.temp.max,
           this._data.displayUnits.temp
         );
-        const hourly = this._generateHourlyForecast(day.hourly);
 
         return `
-          <li class="weather-summary" data-index="${i}">
+          <li class="weather-summary" data-forecast-day-index="${i}">
             <h3 class="weather-summary__day-name">${date}</h3>
             <img class="weather-summary__icon" src="${icon}">
             <p class="weather-summary__temp">
@@ -78,62 +71,8 @@ class ForecastView extends View {
       .join('');
   }
 
-  _generateHourlyForecast(hourly) {
-    return hourly
-      .map(hour => {
-        const time = hour.displayTime[this._data.displayUnits.time];
-        const icon = hour.condition.iconUrl;
-        const temp = this._getDisplayTemp(
-          hour.temp,
-          this._data.displayUnits.temp
-        );
-
-        return `
-          <li class="weather-hourly__hour">
-            <span>${time}</span>
-            <img src="${icon}">
-            <span>${temp}</span>
-          </li>
-        `;
-      })
-      .join('');
-  }
-
-  _openHourlyForecast(e) {
-    if (e.target === this._parentElement) return;
-
-    const weatherSummary = e.target.closest('.weather-summary');
-    const hourlyForecast = weatherSummary.querySelector('.weather-hourly');
-
-    // hourlyForecast.classList.add('active');
-    this._overlay.classList.remove('hidden');
-  }
-
-  addHandlerOpenHourlyForecast(handler) {
-    this._parentElement.addEventListener('click', e => {
-      if (e.target === this._parentElement) return;
-
-      const weatherSummary = e.target.closest('.weather-summary');
-      const { index } = weatherSummary.dataset;
-
-      const { left: x, bottom: y } = weatherSummary.getBoundingClientRect();
-      const coords = { x, y };
-
-      handler(index, coords);
-    });
-  }
-
-  _closeHourlyForecast() {
-    const hourlyForecast = this._parentElement.querySelector(
-      '.weather-hourly.active'
-    );
-
-    hourlyForecast.classList.remove('active');
-    this._overlay.classList.add('hidden');
-  }
-
-  addHandlerOpenHourlyForecast(handler) {
-    document.addEventListener('click', e => {
+  addHandlerToggleHourlyForecast(handler) {
+    document.addEventListener('click', function (e) {
       const weatherSummary = e.target.closest('.weather-summary');
 
       if (!weatherSummary) {
@@ -141,15 +80,12 @@ class ForecastView extends View {
         return;
       }
 
-      const { index } = weatherSummary.dataset;
+      const { forecastDayIndex } = weatherSummary.dataset;
       const { left: x, bottom: y } = weatherSummary.getBoundingClientRect();
       const coords = { x, y };
 
-      handler(index, coords);
+      handler(forecastDayIndex, coords);
     });
-  }
-  _addHandlerCloseHourlyForecast(handler) {
-    this._overlay.addEventListener('click', handler);
   }
 }
 

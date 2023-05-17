@@ -38,19 +38,16 @@ async function controlForecast(index) {
   });
 }
 
-function controlHourlyForecast(index, coords) {
-  if (!index) {
+function controlHourlyForecast(forecastDayIndex, coords) {
+  if (!forecastDayIndex) {
     hourlyForecastView.render();
     return;
   }
 
-  const { hourly } = model.state.weather.forecast[index];
+  const { displayUnits } = model.state;
+  const { hourly } = model.state.weather.forecast[forecastDayIndex];
 
-  hourlyForecastView.render({
-    coords,
-    displayUnits: model.state.displayUnits,
-    hourly,
-  });
+  hourlyForecastView.render({ coords, displayUnits, hourly });
 }
 
 function controlUnitToggle() {
@@ -94,4 +91,4 @@ searchView.addHandlerSearchOnFocus(controlSearchOnFocus);
 searchView.addHandlerShowForecast(controlForecast);
 unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);
-forecastView.addHandlerOpenHourlyForecast(controlHourlyForecast);
+forecastView.addHandlerToggleHourlyForecast(controlHourlyForecast);

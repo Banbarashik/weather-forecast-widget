@@ -59,17 +59,14 @@
 }
 
 .weather-hourly {
-  // display: none;
-
   &.active {
     display: block;
   }
 
   position: absolute;
-  z-index: 100;
-  // top: 0;
-  // left: 85%;
-  transform: translateY(-50%);
+  z-index: 30;
+
+  transform: translate(50%, -50%);
 
   width: 160px;
   padding: 10px;

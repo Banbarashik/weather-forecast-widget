@@ -39,10 +39,17 @@ async function controlForecast(index) {
 }
 
 function controlHourlyForecast(index, coords) {
+  if (!index) {
+    hourlyForecastView.render();
+    return;
+  }
+
+  const { hourly } = model.state.weather.forecast[index];
+
   hourlyForecastView.render({
     coords,
     displayUnits: model.state.displayUnits,
-    hourly: model.state.weather.forecast[index].hourly,
+    hourly,
   });
 }
 

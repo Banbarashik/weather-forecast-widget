@@ -34,6 +34,8 @@ class hourlyForecastView extends View {
   }
 
   _generateMarkup() {
+    if (!this._data) return '';
+
     return `<ul style="left: ${this._data.coords.x}px; top: ${
       this._data.coords.y
     }px" class="weather-hourly">${this._data.hourly

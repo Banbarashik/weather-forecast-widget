@@ -9,14 +9,13 @@ import unitSwitchView from './view/unitSwitchView';
 import getUserLocationView from './view/getUserLocationView';
 import hourlyForecastView from './view/hourlyForecastView';
 
-async function controlSearchOnInput(query) {
-  await model.loadSearchSuggestions(query);
-
-  searchView.render(model.state.searchSuggestions);
-}
-const controlSearchOnBlur = () => searchView.render([]);
+const controlSearchOnBlur = () => searchView.clear();
 const controlSearchOnFocus = () =>
   searchView.render(model.state.searchSuggestions);
+const controlSearchOnInput = async query => {
+  await model.loadSearchSuggestions(query);
+  searchView.render(model.state.searchSuggestions);
+};
 
 async function controlForecast(index) {
   const coords = model.getSearchSuggestionLocation(index);

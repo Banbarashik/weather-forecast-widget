@@ -1,4 +1,5 @@
 const bgVideos = importAll(require.context('./../video', false));
+const bgImages = importAll(require.context('./../img', false));
 
 import {
   API_URL,
@@ -53,7 +54,7 @@ export const state = {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', code: 0, iconUrl: '', videoUrl: '' },
+      condition: { text: '', code: 0, iconUrl: '', videoUrl: '', imageUrl: '' },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
     forecast: [
@@ -195,10 +196,13 @@ function formatWeatherNowObj({
       code: condition.code,
       iconUrl: condition.icon,
       videoUrl: bgVideos[condition.code],
+      imageUrl: bgImages[condition.code],
 
       //* special condition for the code 1000 weather condition
       //* because it has different videos for the day and night periods
+      // prettier-ignore
       ...(condition.code === 1000 && !is_day && { videoUrl: bgVideos[condition.code + 'night'] }),
+      ...(condition.code === 1000 && !is_day && { imageUrl: bgImages[condition.code + 'night'] }),
       // prettier-ignore
     },
     wind: {

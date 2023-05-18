@@ -2,6 +2,7 @@ import View from './View';
 
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
+  _bgImage = document.getElementById('bg-image');
 
   _data = {
     displayUnits: { temp: '', wind: '', time: '' },
@@ -21,10 +22,15 @@ class WeatherNow extends View {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', code: 0, iconUrl: '', videoUrl: '' },
+      condition: { text: '', code: 0, iconUrl: '', videoUrl: '', imageUrl: '' },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
   };
+
+  render(data) {
+    super.render(data);
+    this._bgImage.style.backgroundImage = `url(${this._data.now.condition.imageUrl})`;
+  }
 
   _getDisplayTemp(obj, unit) {
     return obj['display' + unit];

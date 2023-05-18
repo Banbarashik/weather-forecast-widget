@@ -2,7 +2,6 @@ import View from './View';
 
 class ForecastView extends View {
   _parentElement = document.getElementById('forecast');
-  _overlay = document.getElementById('overlay');
 
   isFirstRender = true;
 

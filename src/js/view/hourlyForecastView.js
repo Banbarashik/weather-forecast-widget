@@ -2,7 +2,6 @@ import View from './View';
 
 class hourlyForecastView extends View {
   _parentElement = document.getElementById('popper');
-  _overlay = document.getElementById('overlay');
 
   isFirstRender = true;
 

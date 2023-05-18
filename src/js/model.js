@@ -176,6 +176,7 @@ function formatWeatherNowObj({
   feelslike_f,
   wind_kph,
   wind_mph,
+  is_day,
   condition,
 }) {
   const [k, m, h] = KILOMETRE_PER_HOUR_UNIT;
@@ -198,6 +199,11 @@ function formatWeatherNowObj({
       code: condition.code,
       iconUrl: condition.icon,
       videoUrl: bgVideos[condition.code],
+
+      //* special condition for the code 1000 weather condition
+      //* because it has different videos for the day and night periods
+      ...(condition.code === 1000 && !is_day && { videoUrl: bgVideos[condition.code + 'night'] }),
+      // prettier-ignore
     },
     wind: {
       kmh: wind_kph,

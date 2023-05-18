@@ -21,26 +21,30 @@ const controlSearchOnFocus = () =>
 async function controlForecast(index) {
   const coords = model.getSearchSuggestionLocation(index);
 
-  searchView.render([]);
+  searchView.clear();
 
   await model.loadForecast(coords);
 
-  weatherNow.render({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    location: model.state.weather.location,
-    now: model.state.weather.now,
+  const { displayUnits, displayTimeFormat } = model.state;
+  const { location, now, forecast } = model.state.weather;
+
+  weatherNow[weatherNow.isFirstRender ? 'render' : 'update']({
+    displayUnits,
+    displayTimeFormat,
+    location,
+    now,
   });
-  forecastView.render({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    forecast: model.state.weather.forecast,
+
+  forecastView[forecastView.isFirstRender ? 'render' : 'update']({
+    displayUnits,
+    displayTimeFormat,
+    forecast,
   });
 }
 
 function controlHourlyForecast(forecastDayIndex, coords) {
   if (!forecastDayIndex) {
-    hourlyForecastView.render();
+    hourlyForecastView.clear();
     return;
   }
 
@@ -53,36 +57,36 @@ function controlHourlyForecast(forecastDayIndex, coords) {
 function controlUnitToggle() {
   model.toggleUnits();
 
-  if (!model.state.isLocationLoaded) return;
+  if (weatherNow.isFirstRender || forecastView.isFirstRender) return;
 
-  weatherNow.update({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    location: model.state.weather.location,
-    now: model.state.weather.now,
-  });
-  forecastView.update({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    forecast: model.state.weather.forecast,
-  });
+  const { displayUnits, displayTimeFormat } = model.state;
+  const { location, now, forecast } = model.state.weather;
+
+  weatherNow.update({ displayUnits, displayTimeFormat, location, now });
+  forecastView.update({ displayUnits, displayTimeFormat, forecast });
 }
 
 async function controlGeolocation() {
   await model.getUserLocation();
   await model.loadForecast();
 
-  weatherNow.render({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    location: model.state.weather.location,
-    now: model.state.weather.now,
+  const { displayUnits, displayTimeFormat } = model.state;
+  const { location, now, forecast } = model.state.weather;
+
+  weatherNow[weatherNow.isFirstRender ? 'render' : 'update']({
+    displayUnits,
+    displayTimeFormat,
+    location,
+    now,
   });
-  forecastView.render({
-    displayUnits: model.state.displayUnits,
-    displayTimeFormat: model.state.displayTimeFormat,
-    forecast: model.state.weather.forecast,
+
+  forecastView[forecastView.isFirstRender ? 'render' : 'update']({
+    displayUnits,
+    displayTimeFormat,
+    forecast,
   });
+
+  model.state.isFirstRender = false;
 }
 
 searchView.addHandlerSearchOnInput(controlSearchOnInput);

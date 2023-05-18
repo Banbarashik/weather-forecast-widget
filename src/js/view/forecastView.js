@@ -4,6 +4,8 @@ class ForecastView extends View {
   _parentElement = document.getElementById('forecast');
   _overlay = document.getElementById('overlay');
 
+  isFirstRender = true;
+
   _data = {
     displayUnits: {
       temp: '',

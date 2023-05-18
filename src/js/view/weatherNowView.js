@@ -3,6 +3,8 @@ import View from './View';
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
 
+  isFirstRender = true;
+
   _data = {
     displayUnits: { temp: '', wind: '', time: '' },
     location: {

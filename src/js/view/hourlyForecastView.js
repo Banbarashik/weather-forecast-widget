@@ -4,6 +4,8 @@ class hourlyForecastView extends View {
   _parentElement = document.getElementById('popper');
   _overlay = document.getElementById('overlay');
 
+  isFirstRender = true;
+
   _data = {
     coords: { x: 0, y: 0 },
     displayUnits: {

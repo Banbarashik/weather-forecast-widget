@@ -24,7 +24,6 @@ import {
 } from './helper';
 
 export const state = {
-  isLocationLoaded: false,
   searchSuggestions: [
     /* { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } } */
   ],
@@ -87,8 +86,7 @@ export const state = {
   },
 };
 
-// prettier-ignore
-export const resetSearchSuggestions = () => { state.searchSuggestions = [] };
+export const resetSearchSuggestions = () => { state.searchSuggestions = [] }; //prettier-ignore
 
 export function toggleUnits() {
   if (state.displayUnits.temp === CELSIUS_UNIT) {
@@ -145,8 +143,6 @@ export async function loadForecast(coords = state.userLocationCoords) {
   state.weather.location = formatLocationObj(location);
   state.weather.now = formatWeatherNowObj(current);
   state.weather.forecast = formatForecastArr(forecast.forecastday);
-
-  state.isLocationLoaded = true;
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {

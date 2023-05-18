@@ -4,8 +4,10 @@ export default class View {
 
     const markup = this._generateMarkup();
 
-    this._clear();
+    this.clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+
+    this.isFirstRender = false;
   }
 
   update(data) {
@@ -39,7 +41,7 @@ export default class View {
     });
   }
 
-  _clear() {
+  clear() {
     this._parentElement.textContent = '';
   }
 }

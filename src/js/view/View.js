@@ -1,4 +1,6 @@
 export default class View {
+  isFirstRender = true;
+
   render(data) {
     this._data = data;
 

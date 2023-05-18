@@ -3,8 +3,6 @@ import View from './View';
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
 
-  isFirstRender = true;
-
   _data = {
     displayUnits: { temp: '', wind: '', time: '' },
     location: {
@@ -65,7 +63,8 @@ class WeatherNow extends View {
         <p class="weather-extra-info__feels-like-temp">Feels like: ${feelsLike}</p>
       </div>
 
-      <video id="widget-bg-video" class="bg-video" src="${this._data.now.condition.videoUrl}" autoplay loop playsinline muted></video>
+      <video id="widget-bg-video" class="bg-video" src="${this._data.now.condition.videoUrl}"
+      autoplay loop playsinline muted></video>
     `;
   }
 }

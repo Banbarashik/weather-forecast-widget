@@ -3,8 +3,6 @@ import View from './View';
 class ForecastView extends View {
   _parentElement = document.getElementById('forecast');
 
-  isFirstRender = true;
-
   _data = {
     displayUnits: {
       temp: '',

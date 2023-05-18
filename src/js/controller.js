@@ -85,8 +85,6 @@ async function controlGeolocation() {
     displayTimeFormat,
     forecast,
   });
-
-  model.state.isFirstRender = false;
 }
 
 searchView.addHandlerSearchOnInput(controlSearchOnInput);

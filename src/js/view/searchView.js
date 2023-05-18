@@ -4,8 +4,6 @@ class SearchView extends View {
   _parentElement = document.getElementById('search__suggestions');
   _searchBar = document.getElementById('search__bar');
 
-  isFirstRender = true;
-
   _data = [{ name: '', region: '', country: '', coords: { lat: 0, lon: 0 } }];
 
   addHandlerSearchOnInput(handler) {

@@ -3,8 +3,6 @@ import View from './View';
 class hourlyForecastView extends View {
   _parentElement = document.getElementById('popper');
 
-  isFirstRender = true;
-
   _data = {
     coords: { x: 0, y: 0 },
     displayUnits: {

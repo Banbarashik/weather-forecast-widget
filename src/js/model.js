@@ -173,7 +173,6 @@ function formatWeatherNowObj({
   feelslike_f,
   wind_kph,
   wind_mph,
-  is_day,
   condition,
 }) {
   const [k, m, h] = KILOMETRE_PER_HOUR_UNIT;
@@ -201,8 +200,8 @@ function formatWeatherNowObj({
       //* special condition for the code 1000 weather condition
       //* because it has different videos for the day and night periods
       // prettier-ignore
-      ...(condition.code === 1000 && !is_day && { videoUrl: bgVideos[condition.code + 'night'] }),
-      ...(condition.code === 1000 && !is_day && { imageUrl: bgImages[condition.code + 'night'] }),
+      ...(condition.code === 1000 && condition.text === 'Clear' && { videoUrl: bgVideos[condition.code + 'night'] }),
+      ...(condition.code === 1000 && condition.text === 'Clear' && { imageUrl: bgImages[condition.code + 'night'] }),
       // prettier-ignore
     },
     wind: {

@@ -2,6 +2,16 @@
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export function importAll(requireFn) {
+  return requireFn.keys().map(function (key) {
+    const value = requireFn(key);
+
+    const keys = key.match(/\w+/)[0].split('_');
+
+    return [keys, value];
+  });
+}
+
+/* export function importAll(requireFn) {
   const entries = requireFn.keys().map(function (key) {
     const propName = key
       .match(/\w+/)[0]
@@ -14,7 +24,7 @@ export function importAll(requireFn) {
   });
 
   return Object.fromEntries(entries);
-}
+} */
 
 export async function fetchAndParse(url) {
   const res = await fetch(url);

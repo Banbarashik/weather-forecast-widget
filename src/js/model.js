@@ -194,8 +194,8 @@ function formatWeatherNowObj({
       text: condition.text,
       code: condition.code,
       iconUrl: condition.icon,
-      videoUrl: bgVideos[condition.code],
-      imageUrl: bgImages[condition.code],
+      videoUrl: bgVideos.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
+      imageUrl: bgImages.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
 
       //* special condition for the code 1000 weather condition
       //* because it has different videos for the day and night periods

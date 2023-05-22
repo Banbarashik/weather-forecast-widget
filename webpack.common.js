@@ -8,7 +8,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jpeg|jpg|png|gif|svg|webp|mp4)$/i,
+        test: /\.(jpeg|jpg|png|gif|svg|webp|mp4|webm)$/i,
         type: 'asset/resource',
       },
     ],

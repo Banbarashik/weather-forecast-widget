@@ -22,7 +22,13 @@ class WeatherNow extends View {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', code: 0, iconUrl: '', videoUrl: '', imageUrl: '' },
+      condition: {
+        text: '',
+        code: 0,
+        iconUrl: '',
+        videoUrl: { webm: '', mp4_h265: '', mp4_h264: '' },
+        imageUrl: '',
+      },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
   };
@@ -69,8 +75,11 @@ class WeatherNow extends View {
         <p class="weather-extra-info__feels-like-temp">Feels like: ${feelsLike}</p>
       </div>
 
-      <video id="widget-bg-video" class="bg-video" src="${this._data.now.condition.videoUrl}"
-      autoplay loop playsinline muted></video>
+      <video id="widget-bg-video" class="bg-video" autoplay loop playsinline muted>
+        <source src="${this._data.now.condition.videoUrl.mp4_h265}" type="video/mp4; codecs=hevc" />
+        <source src="${this._data.now.condition.videoUrl.webm}" type="video/webm; codecs=vp9" />
+        <source src="${this._data.now.condition.videoUrl.mp4_h264}" type="video/mp4" />
+      </video>
     `;
   }
 }

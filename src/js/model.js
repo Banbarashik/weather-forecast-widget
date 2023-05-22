@@ -1,4 +1,6 @@
-const bgVideos = importAll(require.context('./../video', false));
+const bgVideosWEBM = importAll(require.context('./../video/webm', false));
+const bgVideosMP4H265 = importAll(require.context('./../video/mp4/h265', false)); // prettier-ignore
+const bgVideosMP4H264 = importAll(require.context('./../video/mp4/h264', false)); // prettier-ignore
 const bgImages = importAll(require.context('./../img', false));
 
 import {
@@ -54,7 +56,13 @@ export const state = {
         displayF: '0&deg;F',
         feelsLike: { c: 0, displayC: '0&deg;C', f: 0, displayF: '0&deg;F' },
       },
-      condition: { text: '', code: 0, iconUrl: '', videoUrl: '', imageUrl: '' },
+      condition: {
+        text: '',
+        code: 0,
+        iconUrl: '',
+        videoUrl: { webm: '', mp4_h265: '', mp4_h264: '' },
+        imageUrl: '',
+      },
       wind: { kmh: 0, display_kmh: '0 km/h', mph: 0, display_mph: '0 mph' },
     },
     forecast: [
@@ -194,7 +202,12 @@ function formatWeatherNowObj({
       text: condition.text,
       code: condition.code,
       iconUrl: condition.icon,
-      videoUrl: bgVideos.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
+      videoUrl: {
+        webm: bgVideosWEBM.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
+        mp4_h265: bgVideosMP4H265.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
+        mp4_h264: bgVideosMP4H264.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
+      },
+      // videoUrl: bgVideos.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
       imageUrl: bgImages.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
 
       //* special condition for the code 1000 weather condition

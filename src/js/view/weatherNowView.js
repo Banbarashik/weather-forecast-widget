@@ -3,6 +3,9 @@ import View from './View';
 class WeatherNow extends View {
   _parentElement = document.getElementById('weather-now');
   _bgImage = document.getElementById('bg-image');
+  get _bgVideo() {
+    return this._parentElement.querySelector('video');
+  }
 
   _data = {
     displayUnits: { temp: '', wind: '', time: '' },
@@ -35,12 +38,18 @@ class WeatherNow extends View {
 
   update(data) {
     super.update(data);
+
     this._bgImage.style.backgroundImage = `url(${this._data.now.condition.imageUrl})`;
+
+    const videosUrls = Object.values(this._data.now.condition.videoUrl);
+    const isTheSameVideo = videosUrls.some(url => url === this._bgVideo.currentSrc); //prettier-ignore
+    if (!isTheSameVideo) this._bgVideo.load();
   }
 
   render(data) {
     super.render(data);
     this._bgImage.style.backgroundImage = `url(${this._data.now.condition.imageUrl})`;
+    this._bgVideo.load();
   }
 
   _getDisplayTemp(obj, unit) {

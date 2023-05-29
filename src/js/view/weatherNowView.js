@@ -33,6 +33,11 @@ class WeatherNow extends View {
     },
   };
 
+  update(data) {
+    super.update(data);
+    this._bgImage.style.backgroundImage = `url(${this._data.now.condition.imageUrl})`;
+  }
+
   render(data) {
     super.render(data);
     this._bgImage.style.backgroundImage = `url(${this._data.now.condition.imageUrl})`;

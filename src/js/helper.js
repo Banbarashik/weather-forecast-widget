@@ -2,13 +2,17 @@
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export function importAll(requireFn) {
-  return requireFn.keys().map(function (key) {
-    const value = requireFn(key);
+  const entries = requireFn
+    .keys()
+    .map(function (key) {
+      const value = requireFn(key);
+      const keys = key.match(/[\w-]+/)[0].split('_');
 
-    const keys = key.match(/\w+/)[0].split('_');
+      return keys.map(key => [key, value]);
+    })
+    .flat();
 
-    return [keys, value];
-  });
+  return Object.fromEntries(entries);
 }
 
 /* export function importAll(requireFn) {

@@ -185,6 +185,33 @@ function formatWeatherNowObj({
 }) {
   const [k, m, h] = KILOMETRE_PER_HOUR_UNIT;
 
+  // TODO account for the 1000 code case
+  const webm =
+    bgVideosWEBM[
+      condition.code == 1000
+        ? `${condition.code}-${condition.text.toLowerCase()}`
+        : condition.code
+    ];
+  const mp4_h265 =
+    bgVideosMP4H265[
+      condition.code == 1000
+        ? `${condition.code}-${condition.text.toLowerCase()}`
+        : condition.code
+    ];
+  const mp4_h264 =
+    bgVideosMP4H264[
+      condition.code == 1000
+        ? `${condition.code}-${condition.text.toLowerCase()}`
+        : condition.code
+    ];
+
+  const imageUrl =
+    bgImages[
+      condition.code == 1000
+        ? `${condition.code}-${condition.text.toLowerCase()}`
+        : condition.code
+    ];
+
   return {
     temp: {
       c: temp_c,
@@ -202,20 +229,8 @@ function formatWeatherNowObj({
       text: condition.text,
       code: condition.code,
       iconUrl: condition.icon,
-      videoUrl: {
-        webm: bgVideosWEBM.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
-        mp4_h265: bgVideosMP4H265.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
-        mp4_h264: bgVideosMP4H264.find(arr => arr[0].some(code => code == 1222))[1], //prettier-ignore
-      },
-      // videoUrl: bgVideos.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
-      imageUrl: bgImages.find(arr => arr[0].some(code => code == condition.code))[1], //prettier-ignore
-
-      //* special condition for the code 1000 weather condition
-      //* because it has different videos for the day and night periods
-      // prettier-ignore
-      ...(condition.code === 1000 && condition.text === 'Clear' && { videoUrl: bgVideos[condition.code + 'night'] }),
-      ...(condition.code === 1000 && condition.text === 'Clear' && { imageUrl: bgImages[condition.code + 'night'] }),
-      // prettier-ignore
+      videoUrl: { webm, mp4_h265, mp4_h264 },
+      imageUrl,
     },
     wind: {
       kmh: wind_kph,

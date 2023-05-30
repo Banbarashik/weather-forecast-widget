@@ -185,28 +185,8 @@ function formatWeatherNowObj({
 }) {
   const [k, m, h] = KILOMETRE_PER_HOUR_UNIT;
 
-  // TODO account for the 1000 code case
-  const webm =
-    bgVideosWEBM[
-      condition.code == 1000
-        ? `${condition.code}-${condition.text.toLowerCase()}`
-        : condition.code
-    ];
-  const mp4_h265 =
-    bgVideosMP4H265[
-      condition.code == 1000
-        ? `${condition.code}-${condition.text.toLowerCase()}`
-        : condition.code
-    ];
-  const mp4_h264 =
-    bgVideosMP4H264[
-      condition.code == 1000
-        ? `${condition.code}-${condition.text.toLowerCase()}`
-        : condition.code
-    ];
-
-  const imageUrl =
-    bgImages[
+  const getBgMedia = urls =>
+    urls[
       condition.code == 1000
         ? `${condition.code}-${condition.text.toLowerCase()}`
         : condition.code
@@ -229,8 +209,12 @@ function formatWeatherNowObj({
       text: condition.text,
       code: condition.code,
       iconUrl: condition.icon,
-      videoUrl: { webm, mp4_h265, mp4_h264 },
-      imageUrl,
+      videoUrl: {
+        webm: getBgMedia(bgVideosWEBM),
+        mp4_h265: getBgMedia(bgVideosMP4H265),
+        mp4_h264: getBgMedia(bgVideosMP4H264),
+      },
+      imageUrl: getBgMedia(bgImages),
     },
     wind: {
       kmh: wind_kph,

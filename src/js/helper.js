@@ -15,23 +15,8 @@ export function importAll(requireFn) {
   return Object.fromEntries(entries);
 }
 
-/* export function importAll(requireFn) {
-  const entries = requireFn.keys().map(function (key) {
-    const propName = key
-      .match(/\w+/)[0]
-      .replace('_', '')
-      .replace(/[A-Z]/, c => c.toLowerCase());
-
-    const propValue = requireFn(key);
-
-    return [propName, propValue];
-  });
-
-  return Object.fromEntries(entries);
-} */
-
-export async function fetchAndParse(url) {
-  const res = await fetch(url);
+export async function fetchAndParse(url, settings) {
+  const res = await fetch(url, settings);
   return res.json();
 }
 

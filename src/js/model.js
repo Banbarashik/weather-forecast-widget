@@ -6,6 +6,8 @@ const bgImages = importAll(require.context('./../img', false));
 import {
   API_URL,
   API_KEY,
+  MAPS_API_URL,
+  MAPS_API_KEY,
   FORECAST_NUM_OF_DAYS,
   CELSIUS_UNIT,
   FAHRENHEIT_UNIT,
@@ -130,6 +132,19 @@ function formatSearchSuggestionsArr(arr) {
     return { name, region, country, coords: { lat, lon } };
   });
 }
+
+export async function getUserLocationByIP() {
+  const loc = await fetchAndParse(`${MAPS_API_URL}?key=${MAPS_API_KEY}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ considerIp: true }),
+  });
+  console.log(loc);
+}
+
+getUserLocationByIP();
 
 export async function getUserLocation() {
   if (state.userLocationCoords.lat && state.userLocationCoords.lon) return;

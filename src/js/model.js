@@ -134,17 +134,19 @@ function formatSearchSuggestionsArr(arr) {
 }
 
 export async function getUserLocationByIP() {
-  const loc = await fetchAndParse(`${MAPS_API_URL}?key=${MAPS_API_KEY}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ considerIp: true }),
-  });
-  console.log(loc);
-}
+  const { location: coords } = await fetchAndParse(
+    `${MAPS_API_URL}?key=${MAPS_API_KEY}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ considerIp: true }),
+    }
+  );
 
-getUserLocationByIP();
+  state.userLocationCoords = { lat: coords.lat, lon: coords.lng };
+}
 
 export async function getUserLocation() {
   if (state.userLocationCoords.lat && state.userLocationCoords.lon) return;

@@ -134,25 +134,22 @@ function formatSearchSuggestionsArr(arr) {
 }
 
 export async function getUserLocationByIP() {
-  const { location: coords } = await fetchAndParse(
-    `${MAPS_API_URL}?key=${MAPS_API_KEY}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ considerIp: true }),
-    }
-  );
+  const {
+    location: { lat, lng: lon },
+  } = await fetchAndParse(`${MAPS_API_URL}?key=${MAPS_API_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ considerIp: true }),
+  });
 
-  state.userLocationCoords = { lat: coords.lat, lon: coords.lng };
+  return { lat, lon };
 }
 
 export async function getUserLocation() {
-  if (state.userLocationCoords.lat && state.userLocationCoords.lon) return;
-
-  const { coords } = await getLocationPromise();
-  state.userLocationCoords = { lat: coords.latitude, lon: coords.longitude };
+  state.userLocationCoords =
+    state.userLocationCoords.lat && state.userLocationCoords.lon
+      ? await getLocationPromise()
+      : await getUserLocationByIP();
 }
 
 export const getSearchSuggestionLocation = index =>

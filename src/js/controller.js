@@ -94,24 +94,4 @@ unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);
 forecastView.addHandlerToggleHourlyForecast(controlHourlyForecast);
 
-// TODO get and render the info from the Google Geolocation API when the page is opened
-window.addEventListener('DOMContentLoaded', async function () {
-  await model.getUserLocationByIP();
-  await model.loadForecast();
-
-  const { displayUnits, displayTimeFormat } = model.state;
-  const { location, now, forecast } = model.state.weather;
-
-  weatherNow[weatherNow.isFirstRender ? 'render' : 'update']({
-    displayUnits,
-    displayTimeFormat,
-    location,
-    now,
-  });
-
-  forecastView[forecastView.isFirstRender ? 'render' : 'update']({
-    displayUnits,
-    displayTimeFormat,
-    forecast,
-  });
-});
+window.addEventListener('DOMContentLoaded', controlGeolocation);

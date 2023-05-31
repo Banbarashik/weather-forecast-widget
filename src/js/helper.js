@@ -52,6 +52,9 @@ export const formatWindSpeed = (speed, unit) => Math.round(speed) + ' ' + unit;
 
 export function getLocationPromise() {
   return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
+    navigator.geolocation.getCurrentPosition(
+      res => resolve({ lat: res.coords.latitude, lon: res.coords.longitude }),
+      reject
+    );
   });
 }

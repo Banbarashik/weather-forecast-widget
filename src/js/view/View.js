@@ -1,4 +1,6 @@
 export default class View {
+  _spinner = document.getElementById('spinner');
+
   isFirstRender = true;
 
   render(data) {
@@ -8,6 +10,8 @@ export default class View {
 
     this.clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+
+    this._hideSpinner();
 
     this.isFirstRender = false;
   }
@@ -45,5 +49,9 @@ export default class View {
 
   clear() {
     this._parentElement.textContent = '';
+  }
+
+  _hideSpinner() {
+    this._spinner.className = 'hidden';
   }
 }

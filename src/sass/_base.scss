@@ -5,6 +5,13 @@
   --border-radius: 20px;
 }
 
+@mixin abs-pos-centered($x: -50%, $y: -50%) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate($x, $y);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,6 +22,28 @@ body {
   overflow: hidden;
 
   font-size: 16px;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+#spinner {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #fff;
+
+  svg {
+    @include abs-pos-centered(-100%, -100%);
+
+    scale: 0.5;
+  }
 }
 
 #bg-image {

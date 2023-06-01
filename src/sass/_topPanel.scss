@@ -11,8 +11,16 @@
 
   width: 200px;
   padding: 10px;
-  border: none;
-  border-radius: 14px;
+  border-radius: 10px;
+
+  outline: none;
+
+  //* glassmorphism
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
   &:focus {
     width: 350px;
@@ -51,6 +59,15 @@
   background: none;
 
   svg {
+    fill: rgba(255, 255, 255, 0.3);
+    stroke-width: 3px;
+
+    transition: all 0.2s;
+
     cursor: pointer;
+
+    &:hover {
+      fill: rgba(255, 255, 255, 0.5);
+    }
   }
 }

@@ -24,15 +24,16 @@ import {
   getHourIn12hrFormat,
   formatTemp,
   formatWindSpeed,
-  getLocationPromise,
   importAll,
+  getCurrentPositionPromise,
 } from './helper';
 
 export const state = {
   searchSuggestions: [
     /* { name: '', region: '', country: '', coords: { lat: 0, lon: 0 } } */
   ],
-  userLocationCoords: { lat: 0, lon: 0 },
+  isUserApproxLocationLoaded: false,
+  isUserPreciseLocationLoaded: false,
   displayUnits: {
     temp: CELSIUS_UNIT,
     wind: KILOMETRE_PER_HOUR_UNIT,
@@ -133,7 +134,7 @@ function formatSearchSuggestionsArr(arr) {
   });
 }
 
-export async function getUserLocationByIP() {
+export async function getUserApproxLocation() {
   const {
     location: { lat, lng: lon },
   } = await fetchAndParse(`${MAPS_API_URL}?key=${MAPS_API_KEY}`, {
@@ -142,20 +143,30 @@ export async function getUserLocationByIP() {
     body: JSON.stringify({ considerIp: true }),
   });
 
+  state.isUserApproxLocationLoaded = true;
+
   return { lat, lon };
 }
 
-export async function getUserLocation() {
-  state.userLocationCoords =
-    state.userLocationCoords.lat && state.userLocationCoords.lon
-      ? await getLocationPromise()
-      : await getUserLocationByIP();
+export async function getUserPreciseLocation() {
+  const {
+    coords: { latitude: lat, longitude: lon },
+  } = await getCurrentPositionPromise();
+
+  state.isUserPreciseLocationLoaded = true;
+
+  return { lat, lon };
 }
+
+export const getUserLocation = async () =>
+  state.isUserApproxLocationLoaded
+    ? await getUserPreciseLocation()
+    : await getUserApproxLocation();
 
 export const getSearchSuggestionLocation = index =>
   state.searchSuggestions[index].coords;
 
-export async function loadForecast(coords = state.userLocationCoords) {
+export async function loadForecast(coords) {
   const { location, current, forecast } = await fetchAndParse(
     `${API_URL}/forecast.json?` +
       `key=${API_KEY}` +

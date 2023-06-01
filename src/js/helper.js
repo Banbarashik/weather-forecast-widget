@@ -50,11 +50,10 @@ export const formatTemp = (temp, unit = '') =>
 
 export const formatWindSpeed = (speed, unit) => Math.round(speed) + ' ' + unit;
 
-export function getLocationPromise() {
+export function getCurrentPositionPromise() {
   return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(
-      res => resolve({ lat: res.coords.latitude, lon: res.coords.longitude }),
-      reject
-    );
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      maximumAge: Infinity,
+    });
   });
 }

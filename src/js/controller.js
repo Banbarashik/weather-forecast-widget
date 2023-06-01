@@ -18,10 +18,9 @@ const controlSearchOnInput = async query => {
 };
 
 async function controlForecast(index) {
-  const coords = model.getSearchSuggestionLocation(index);
-
   searchView.clear();
 
+  const coords = model.getSearchSuggestionLocation(index);
   await model.loadForecast(coords);
 
   const { displayUnits, displayTimeFormat } = model.state;
@@ -66,8 +65,8 @@ function controlUnitToggle() {
 }
 
 async function controlGeolocation() {
-  await model.getUserLocation();
-  await model.loadForecast();
+  const coords = await model.getUserLocation();
+  await model.loadForecast(coords);
 
   const { displayUnits, displayTimeFormat } = model.state;
   const { location, now, forecast } = model.state.weather;
@@ -94,4 +93,8 @@ unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
 getUserLocationView.addHandlerGetLocation(controlGeolocation);
 forecastView.addHandlerToggleHourlyForecast(controlHourlyForecast);
 
-window.addEventListener('DOMContentLoaded', controlGeolocation);
+function init() {
+  controlGeolocation();
+}
+
+init();

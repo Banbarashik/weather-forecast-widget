@@ -98,6 +98,11 @@ export const state = {
   },
 };
 
+const countryNamesShort = {
+  'United States of America': 'USA',
+  'United Kingdom': 'UK',
+};
+
 export const resetSearchSuggestions = () => { state.searchSuggestions = [] }; //prettier-ignore
 
 export function toggleUnits() {
@@ -130,7 +135,14 @@ export async function loadSearchSuggestions(query) {
 
 function formatSearchSuggestionsArr(arr) {
   return arr.map(function ({ name, region, country, lat, lon }) {
-    return { name, region, country, coords: { lat, lon } };
+    return {
+      name,
+      region,
+      country: countryNamesShort[country]
+        ? countryNamesShort[country]
+        : country,
+      coords: { lat, lon },
+    };
   });
 }
 
@@ -183,7 +195,7 @@ function formatLocationObj({ name, region, country, lat, lon, localtime }) {
   return {
     name,
     region,
-    country,
+    country: countryNamesShort[country] ? countryNamesShort[country] : country,
     coords: { lat, lon },
     localtime,
     displayLocaltime: {

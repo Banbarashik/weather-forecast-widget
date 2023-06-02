@@ -61,8 +61,8 @@ class ForecastView extends View {
             <h3 class="weather-summary__day-name">${date}</h3>
             <img class="weather-summary__icon" src="${icon}">
             <p class="weather-summary__temp">
+            <span class="weather-summary__temp_max">${maxTemp}</span>
               <span class="weather-summary__temp_min">${minTemp}</span>
-              <span class="weather-summary__temp_max">${maxTemp}</span>
             </p>
           </li>
         `;

@@ -24,19 +24,40 @@
 
   &:focus {
     width: 350px;
+    border-bottom: {
+      left-radius: 0;
+      right-radius: 0;
+    }
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.3);
   }
 }
 
 #search__suggestions {
   position: absolute;
   z-index: 10;
+  overflow-y: hidden;
 
   width: 350px;
+  margin-top: -1px;
+  border: {
+    top: {
+      left-radius: 0;
+      right-radius: 0;
+    }
+    bottom: {
+      left-radius: 10px;
+      right-radius: 10px;
+    }
+  }
 
   list-style: none;
 
-  background-color: yellowgreen;
-  color: white;
+  //* glassmorphism
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 
   cursor: pointer;
 }
@@ -45,7 +66,7 @@
   padding: 15px;
 
   &:hover {
-    background-color: darkgreen;
+    background-color: rgba(255, 255, 255, 0.4);
   }
 }
 

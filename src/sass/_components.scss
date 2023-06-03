@@ -14,9 +14,10 @@
   padding: var(--widget-padding);
   border-radius: 24px;
 
+  box-shadow: 0px 0px 137px 41px rgba(255, 255, 255, 0.19);
+
   //* glassmorphism
   background: rgba(194, 242, 253, 0.5);
-  // box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }

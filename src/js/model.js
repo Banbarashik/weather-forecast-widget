@@ -137,7 +137,7 @@ function formatSearchSuggestionsArr(arr) {
   return arr.map(function ({ name, region, country, lat, lon }) {
     return {
       name,
-      region,
+      region: region === 'null' ? null : region,
       country: countryNamesShort[country]
         ? countryNamesShort[country]
         : country,

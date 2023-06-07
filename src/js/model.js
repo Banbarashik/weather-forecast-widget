@@ -102,6 +102,7 @@ export const state = {
 const countryNamesShort = {
   'United States of America': 'USA',
   'United Kingdom': 'UK',
+  'Democratic Republic of Congo': 'DRC',
 };
 
 export const resetSearchSuggestions = () => { state.searchSuggestions = [] }; //prettier-ignore

@@ -85,6 +85,10 @@ async function controlGeolocation() {
   });
 }
 
+function controlPrefetch() {
+  model.prefetchBGs();
+}
+
 searchView.addHandlerSearchOnInput(controlSearchOnInput);
 searchView.addHandlerSearchOnBlur(controlSearchOnBlur);
 searchView.addHandlerSearchOnFocus(controlSearchOnFocus);
@@ -94,7 +98,9 @@ getUserLocationView.addHandlerGetLocation(controlGeolocation);
 forecastView.addHandlerToggleHourlyForecast(controlHourlyForecast);
 
 function init() {
-  controlGeolocation();
+  controlGeolocation().then(() =>
+    weatherNow.addHandlerPrefetchBGs(controlPrefetch)
+  );
 }
 
 init();

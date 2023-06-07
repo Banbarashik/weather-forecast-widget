@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -17,16 +16,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Weather App',
       template: 'src/template.html',
-    }),
-    new PreloadWebpackPlugin({
-      rel: 'prefetch',
-      include: 'allAssets',
-      as(entry) {
-        if (/\.jpg$/.test(entry)) return 'image';
-        if (/\.webm$/.test(entry)) return 'video';
-        return 'script';
-      },
-      fileWhitelist: [/\.(jpg|webm)$/],
     }),
   ],
 };

@@ -1,6 +1,19 @@
 // prettier-ignore
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+function injectLinkPrefetch(url) {
+  const linkTag = document.createElement('link');
+  linkTag.rel = 'prefetch';
+  linkTag.href = url;
+  if (/\.jpg$/.test(url)) linkTag.as = 'image';
+  if (/\.webm$/.test(url)) linkTag.as = 'video';
+
+  document.head.appendChild(linkTag);
+}
+
+// prettier-ignore
+export const injectMultipleLinkPrefetch = arrOfURLs => arrOfURLs.forEach(injectLinkPrefetch);
+
 export function importAll(requireFn) {
   const entries = requireFn
     .keys()

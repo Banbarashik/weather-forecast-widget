@@ -26,6 +26,7 @@ import {
   formatWindSpeed,
   importAll,
   getCurrentPositionPromise,
+  injectMultipleLinkPrefetch,
 } from './helper';
 
 export const state = {
@@ -189,6 +190,16 @@ export async function loadForecast(coords) {
   state.weather.location = formatLocationObj(location);
   state.weather.now = formatWeatherNowObj(current);
   state.weather.forecast = formatForecastArr(forecast.forecastday);
+}
+
+export function prefetchBGs() {
+  const URLs = [...Object.values(bgVideosWEBM), ...Object.values(bgImages)];
+
+  //* don't prefetch if the user's internet connection < 4g (for browsers that have navigator.connection)
+  if (window.navigator.connection?.effectiveType === '4g')
+    injectMultipleLinkPrefetch(URLs);
+
+  if (!window.navigator.connection) injectMultipleLinkPrefetch(URLs);
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {

@@ -37,7 +37,7 @@ class WeatherNow extends View {
   };
 
   addHandlerPrefetchBGs(handler) {
-    this._bgVideo.addEventListener('loadstart', handler, { once: true });
+    this._bgVideo.addEventListener('loadeddata', handler, { once: true });
   }
 
   update(data) {

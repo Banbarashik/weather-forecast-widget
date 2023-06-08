@@ -20,6 +20,9 @@
 
   outline: none;
 
+  font-size: 14px;
+  font-family: inherit;
+
   //* glassmorphism
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -31,6 +34,10 @@
     width: var(--widget-box-size);
     box-shadow: none;
     background: rgba(255, 255, 255, 0.3);
+  }
+
+  &::placeholder {
+    color: rgb(52, 52, 52);
   }
 }
 

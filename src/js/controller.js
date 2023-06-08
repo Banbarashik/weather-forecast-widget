@@ -2,25 +2,26 @@ import '../sass/main.scss';
 
 import * as model from './model';
 
-import searchView from './view/searchView';
+import topPanelView from './view/topPanelView';
 import weatherNow from './view/weatherNowView';
 import forecastView from './view/forecastView';
-import unitSwitchView from './view/unitSwitchView';
-import getUserLocationView from './view/getUserLocationView';
 import hourlyForecastView from './view/hourlyForecastView';
 
-const controlSearchOnBlur = () => searchView.clear();
+const controlSearchOnBlur = () => topPanelView.clear();
 const controlSearchOnFocus = () =>
-  searchView.render(model.state.searchSuggestions);
+  topPanelView.render(model.state.searchSuggestions);
 const controlSearchOnInput = async query => {
   await model.loadSearchSuggestions(query);
-  searchView.render(model.state.searchSuggestions);
+  topPanelView.render(model.state.searchSuggestions);
 };
 
-async function controlForecast(index) {
-  searchView.clear();
+async function controlForecast(suggestionIndex) {
+  topPanelView.clear();
 
-  const coords = model.getSearchSuggestionLocation(index);
+  const coords = suggestionIndex
+    ? model.getSearchSuggestionLocation(suggestionIndex)
+    : await model.getUserLocation();
+
   await model.loadForecast(coords);
 
   const { displayUnits, displayTimeFormat } = model.state;
@@ -64,41 +65,19 @@ function controlUnitToggle() {
   forecastView.update({ displayUnits, displayTimeFormat, forecast });
 }
 
-async function controlGeolocation() {
-  const coords = await model.getUserLocation();
-  await model.loadForecast(coords);
-
-  const { displayUnits, displayTimeFormat } = model.state;
-  const { location, now, forecast } = model.state.weather;
-
-  weatherNow[weatherNow.isFirstRender ? 'render' : 'update']({
-    displayUnits,
-    displayTimeFormat,
-    location,
-    now,
-  });
-
-  forecastView[forecastView.isFirstRender ? 'render' : 'update']({
-    displayUnits,
-    displayTimeFormat,
-    forecast,
-  });
-}
-
 function controlPrefetch() {
   model.prefetchBGs();
 }
 
-searchView.addHandlerSearchOnInput(controlSearchOnInput);
-searchView.addHandlerSearchOnBlur(controlSearchOnBlur);
-searchView.addHandlerSearchOnFocus(controlSearchOnFocus);
-searchView.addHandlerShowForecast(controlForecast);
-unitSwitchView.addHandlerToggleUnit(controlUnitToggle);
-getUserLocationView.addHandlerGetLocation(controlGeolocation);
+topPanelView.addHandlerSearchOnInput(controlSearchOnInput);
+topPanelView.addHandlerSearchOnBlur(controlSearchOnBlur);
+topPanelView.addHandlerSearchOnFocus(controlSearchOnFocus);
+topPanelView.addHandlerShowForecast(controlForecast);
+topPanelView.addHandlerToggleUnit(controlUnitToggle);
 forecastView.addHandlerToggleHourlyForecast(controlHourlyForecast);
 
 function init() {
-  controlGeolocation().then(() =>
+  controlForecast().then(() =>
     weatherNow.addHandlerPrefetchBGs(controlPrefetch)
   );
 }

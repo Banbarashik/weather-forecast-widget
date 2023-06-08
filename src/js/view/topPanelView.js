@@ -1,8 +1,10 @@
 import View from './View';
 
-class SearchView extends View {
+class TopPanelView extends View {
   _parentElement = document.getElementById('search__suggestions');
   _searchBar = document.getElementById('search__bar');
+  _unitToggle = document.getElementById('unit-toggle').querySelector('input');
+  _getUserLocationBtn = document.getElementById('get-user-location');
 
   _data = [{ name: '', region: '', country: '', coords: { lat: 0, lon: 0 } }];
 
@@ -24,6 +26,12 @@ class SearchView extends View {
       const { index } = suggestion.dataset;
       handler(index);
     });
+
+    this._getUserLocationBtn.addEventListener('click', () => handler());
+  }
+
+  addHandlerToggleUnit(handler) {
+    this._unitToggle.addEventListener('click', handler);
   }
 
   _generateMarkup() {
@@ -41,4 +49,4 @@ class SearchView extends View {
   }
 }
 
-export default new SearchView();
+export default new TopPanelView();

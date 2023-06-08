@@ -103,6 +103,7 @@ const countryNamesShort = {
   'United States of America': 'USA',
   'United Kingdom': 'UK',
   'Democratic Republic of Congo': 'DRC',
+  "Lao People's Democratic Republic": 'Laos',
 };
 
 export const resetSearchSuggestions = () => { state.searchSuggestions = [] }; //prettier-ignore

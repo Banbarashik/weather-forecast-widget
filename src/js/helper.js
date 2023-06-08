@@ -1,3 +1,8 @@
+import {
+  TWELVE_HOURS_FORMAT_CYCLE,
+  TWENTY_FOUR_HOURS_FORMAT_CYCLE,
+} from './config';
+
 // prettier-ignore
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -38,15 +43,17 @@ const isToday = date => date.toDateString() === new Date().toDateString();
 export const getDayName = date =>
   isToday(date) ? 'Today' : weekdays[date.getDay()].slice(0, 3);
 
-const hourFormatter = hour12 =>
+const hourFormatter = hourCycle =>
   new Intl.DateTimeFormat('default', {
     hour: 'numeric',
-    minute: 'numeric',
-    hour12,
+    ...(hourCycle === TWENTY_FOUR_HOURS_FORMAT_CYCLE && { minute: 'numeric' }),
+    hourCycle,
   });
 
-export const getHourIn24hrFormat = date => hourFormatter(false).format(date);
-export const getHourIn12hrFormat = date => hourFormatter(true).format(date);
+// prettier-ignore
+export const getHourIn24hrFormat = date => hourFormatter(TWENTY_FOUR_HOURS_FORMAT_CYCLE).format(date);
+// prettier-ignore
+export const getHourIn12hrFormat = date => hourFormatter(TWELVE_HOURS_FORMAT_CYCLE).format(date);
 
 export function formatDate(date, timeFormat) {
   const dayName = weekdays[date.getDay()];

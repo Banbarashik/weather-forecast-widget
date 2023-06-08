@@ -109,8 +109,10 @@
   padding: 10px;
   border-radius: 14px;
 
-  background-color: white;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  //* glassmorphism
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 
   cursor: default;
 

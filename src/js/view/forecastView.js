@@ -80,7 +80,7 @@ class ForecastView extends View {
       }
 
       const { forecastDayIndex } = weatherSummary.dataset;
-      const { left: x, bottom: y } = weatherSummary.getBoundingClientRect();
+      const { right: x, bottom: y } = weatherSummary.getBoundingClientRect();
       const coords = { x, y };
 
       handler(forecastDayIndex, coords);

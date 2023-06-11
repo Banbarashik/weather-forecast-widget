@@ -38,6 +38,9 @@ export async function fetchAndParse(url, settings) {
   return res.json();
 }
 
+export const convertDateStrToValues = dateStr =>
+  dateStr.split(/[-\s:]/g).map((str, i) => (i === 1 ? --str : +str));
+
 const isToday = date => date.toDateString() === new Date().toDateString();
 
 export const getDayName = date =>

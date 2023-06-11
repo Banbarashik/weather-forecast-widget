@@ -27,6 +27,7 @@ import {
   importAll,
   getCurrentPositionPromise,
   injectMultipleLinkPrefetch,
+  convertDateStrToValues,
 } from './helper';
 
 export const state = {
@@ -46,7 +47,7 @@ export const state = {
       region: '',
       country: '',
       coords: { lat: 0, lon: 0 },
-      localtime: '',
+      localtime: [],
       displayLocaltime: {
         [TWENTY_FOUR_HOURS_FORMAT]: '',
         [TWELVE_HOURS_FORMAT]: '',
@@ -80,7 +81,7 @@ export const state = {
         iconUrl: '',
         hourly: [
           {
-            time: '',
+            time: [],
             displayTime: {
               [TWENTY_FOUR_HOURS_FORMAT]: '',
               [TWELVE_HOURS_FORMAT]: '',
@@ -213,19 +214,21 @@ export function prefetchBGs() {
 }
 
 function formatLocationObj({ name, region, country, lat, lon, localtime }) {
+  const localtimeValues = convertDateStrToValues(localtime);
+
   return {
     name,
     region,
     country: countryNamesShort[country] ? countryNamesShort[country] : country,
     coords: { lat, lon },
-    localtime,
+    localtime: localtimeValues,
     displayLocaltime: {
       [TWENTY_FOUR_HOURS_FORMAT]: formatDate(
-        new Date(localtime),
+        new Date(...localtimeValues),
         TWENTY_FOUR_HOURS_FORMAT
       ),
       [TWELVE_HOURS_FORMAT]: formatDate(
-        new Date(localtime),
+        new Date(...localtimeValues),
         TWELVE_HOURS_FORMAT
       ),
     },
@@ -284,12 +287,18 @@ function formatWeatherNowObj({
 }
 
 const formatForecastArr = (function () {
-  function _formatForecastHourObj({ time, temp_c, temp_f, condition }) {
+  function _formatForecastHourObj({ time: hour, temp_c, temp_f, condition }) {
+    const hourValues = convertDateStrToValues(hour);
+
     return {
-      time: time,
+      time: hourValues,
       displayTime: {
-        [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(new Date(time)),
-        [TWELVE_HOURS_FORMAT]: getHourIn12hrFormatNoMinutes(new Date(time)),
+        [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(
+          new Date(...hourValues)
+        ),
+        [TWELVE_HOURS_FORMAT]: getHourIn12hrFormatNoMinutes(
+          new Date(...hourValues)
+        ),
       },
       temp: {
         c: temp_c,
@@ -304,7 +313,7 @@ const formatForecastArr = (function () {
   function _formatForecastDayObj({ day, date, hour }) {
     return {
       date,
-      displayDate: getDayName(new Date(date)),
+      displayDate: getDayName(new Date(...convertDateStrToValues(date))),
       temp: {
         min: {
           c: day.mintemp_c,

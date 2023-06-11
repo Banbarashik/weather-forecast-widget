@@ -21,7 +21,7 @@ import {
   formatDate,
   getDayName,
   getHourIn24hrFormat,
-  getHourIn12hrFormat,
+  getHourIn12hrFormatNoMinutes,
   formatTemp,
   formatWindSpeed,
   importAll,
@@ -281,7 +281,7 @@ const formatForecastArr = (function () {
       time: time,
       displayTime: {
         [TWENTY_FOUR_HOURS_FORMAT]: getHourIn24hrFormat(new Date(time)),
-        [TWELVE_HOURS_FORMAT]: getHourIn12hrFormat(new Date(time)),
+        [TWELVE_HOURS_FORMAT]: getHourIn12hrFormatNoMinutes(new Date(time)),
       },
       temp: {
         c: temp_c,

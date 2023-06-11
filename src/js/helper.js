@@ -43,10 +43,10 @@ const isToday = date => date.toDateString() === new Date().toDateString();
 export const getDayName = date =>
   isToday(date) ? 'Today' : weekdays[date.getDay()].slice(0, 3);
 
-const hourFormatter = hourCycle =>
+const hourFormatter = (hourCycle, minute = true) =>
   new Intl.DateTimeFormat('default', {
     hour: 'numeric',
-    ...(hourCycle === TWENTY_FOUR_HOURS_FORMAT_CYCLE && { minute: 'numeric' }),
+    ...(minute && { minute: 'numeric' }),
     hourCycle,
   });
 
@@ -54,6 +54,8 @@ const hourFormatter = hourCycle =>
 export const getHourIn24hrFormat = date => hourFormatter(TWENTY_FOUR_HOURS_FORMAT_CYCLE).format(date);
 // prettier-ignore
 export const getHourIn12hrFormat = date => hourFormatter(TWELVE_HOURS_FORMAT_CYCLE).format(date);
+// prettier-ignore
+export const getHourIn12hrFormatNoMinutes = date => hourFormatter(TWELVE_HOURS_FORMAT_CYCLE, false).format(date);
 
 export function formatDate(date, timeFormat) {
   const dayName = weekdays[date.getDay()];

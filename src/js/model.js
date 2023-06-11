@@ -178,14 +178,22 @@ export const getUserLocation = async () =>
     ? await getUserPreciseLocation()
     : await getUserApproxLocation();
 
-export const getSearchSuggestionLocation = index =>
-  state.searchSuggestions[index].coords;
+export function getSearchSuggestionLocation(index) {
+  const {
+    coords: { lat, lon },
+    name,
+    region,
+    country,
+  } = state.searchSuggestions[index];
+  return { lat, lon, name, region, country };
+}
 
-export async function loadForecast(coords) {
+// prettier-ignore
+export async function loadForecast({lat, lon, name = '', region = '', country = ''}) {
   const { location, current, forecast } = await fetchAndParse(
     `${API_URL}/forecast.json?` +
       `key=${API_KEY}` +
-      `&q=${coords.lat},${coords.lon}` +
+      `&q=${lat}%20${lon}%20${name}%20${region}%20${country}` +
       `&days=${FORECAST_NUM_OF_DAYS}`
   );
 

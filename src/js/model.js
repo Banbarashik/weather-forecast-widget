@@ -195,7 +195,9 @@ export async function loadForecast({lat, lon, name = '', region = '', country = 
     `${API_URL}/forecast.json?` +
       `key=${API_KEY}` +
       `&q=${lat}%20${lon}%20${name}%20${region}%20${country}` +
-      `&days=${FORECAST_NUM_OF_DAYS}`
+      `&days=${FORECAST_NUM_OF_DAYS}`,
+      
+    { cache: 'no-cache' }
   );
 
   state.weather.location = formatLocationObj(location);

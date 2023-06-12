@@ -1,11 +1,20 @@
-# Weather widget
+# Weather Forecast Widget
 
 ## Features
 
-- View detailed current weather
-- Detect approximate user location and show weather for it
-- View weather for 3 days
+- 3-day forecast with hourly forecasts
+- Location search with suggestions
+- Automatic approximate location detection
+- Precise location retrieval with user permission
+- Animated backgrounds reflecting weather conditions
+- Temperature, time and wind speed units toggling
 
-#### TODO
+## Technologies Used
 
-- Create a mobile layout
+- JavaScript
+- HTML
+- CSS (SASS)
+- Google's Geolocation API
+- Geolocation Web API
+- WeatherAPI
+- Webpack

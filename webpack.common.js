@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
 module.exports = {
   entry: {
     index: './src/js/controller.js',
@@ -13,8 +15,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new NodePolyfillPlugin(),
     new HtmlWebpackPlugin({
-      title: 'Weather App',
+      title: 'Weather Forecast Widget',
       template: 'src/template.html',
     }),
   ],

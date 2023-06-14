@@ -4,10 +4,6 @@ const bgVideosMP4H264 = importAll(require.context('./../video/mp4/h264', false))
 const bgImages = importAll(require.context('./../img', false));
 
 import {
-  API_URL,
-  API_KEY,
-  MAPS_API_URL,
-  MAPS_API_KEY,
   FORECAST_NUM_OF_DAYS,
   CELSIUS_UNIT,
   FAHRENHEIT_UNIT,
@@ -131,8 +127,14 @@ export async function loadSearchSuggestions(query) {
   }
 
   const searchSuggestions = await fetchAndParse(
-    `${API_URL}/search.json?key=${API_KEY}&q=${query}`
+    '/.netlify/functions/load-search-suggestions',
+    {
+      method: 'POST',
+      body: JSON.stringify({ message: 'how are you?' }),
+    }
   );
+
+  console.log(searchSuggestions);
 
   state.searchSuggestions = formatSearchSuggestionsArr(searchSuggestions);
 }
@@ -153,11 +155,14 @@ function formatSearchSuggestionsArr(arr) {
 export async function getUserApproxLocation() {
   const {
     location: { lat, lng: lon },
-  } = await fetchAndParse(`${MAPS_API_URL}?key=${MAPS_API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ considerIp: true }),
-  });
+  } = await fetchAndParse(
+    `${process.env.MAPS_API_URL}?key=${process.env.MAPS_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ considerIp: true }),
+    }
+  );
 
   state.isUserApproxLocationLoaded = true;
 
@@ -192,8 +197,8 @@ export function getSearchSuggestionLocation(index) {
 // prettier-ignore
 export async function loadForecast({lat, lon, name = '', region = '', country = ''}) {
   const { location, current, forecast } = await fetchAndParse(
-    `${API_URL}/forecast.json?` +
-      `key=${API_KEY}` +
+    `${process.env.API_URL}/forecast.json?` +
+      `key=${process.env.API_KEY}` +
       `&q=${lat}%20${lon}%20${name}%20${region}%20${country}` +
       `&days=${FORECAST_NUM_OF_DAYS}`,
       

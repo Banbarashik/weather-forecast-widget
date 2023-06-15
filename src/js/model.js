@@ -151,8 +151,8 @@ function formatSearchSuggestionsArr(arr) {
 }
 
 export async function getUserApproxLocation() {
-  const { lat, lon } = await fetchAndParse(
-    '/.netlify/functions/get-user-approx-location'
+  const { latitude: lat, longitude: lon } = await fetchAndParse(
+    'https://geolocation-db.com/json/'
   );
 
   state.isUserApproxLocationLoaded = true;

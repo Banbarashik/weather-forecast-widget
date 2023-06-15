@@ -14,7 +14,7 @@
 - JavaScript
 - HTML
 - CSS (SASS)
-- Google's Geolocation API
+- [Geolocation DB](https://geolocation-db.com/) API
 - Geolocation Web API
-- WeatherAPI
+- [Weather API](https://www.weatherapi.com/)
 - Webpack

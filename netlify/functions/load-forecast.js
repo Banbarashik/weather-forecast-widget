@@ -1,19 +1,23 @@
 exports.handler = async function (event) {
-  const { lat, lon, name, region, country, numOfDays } = JSON.parse(event.body);
+  const requestData = JSON.parse(event.body);
 
-  const {
-    location,
-    current,
-    forecast: { forecastday },
-  } = await fetch(
+  const forecast = await fetch(
     `${process.env.API_URL}/forecast.json?` +
       `key=${process.env.API_KEY}` +
-      `&q=${lat}%20${lon}%20${name}%20${region}%20${country}` +
-      `&days=${numOfDays}`
-  ).then(res => res.json());
+      `&q=${requestData.lat}%20${requestData.lon}%20${requestData.name}%20${requestData.region}%20${requestData.country}` +
+      `&days=${requestData.numOfDays}`
+  )
+    .then(res => res.json())
+    .then(function (res) {
+      return {
+        location: res.location,
+        current: res.current,
+        forecast: res.forecast.forecastday,
+      };
+    });
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ location, current, forecast: forecastday }),
+    body: JSON.stringify(forecast),
   };
 };

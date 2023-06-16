@@ -24,6 +24,8 @@ async function controlForecast(suggestionIndex) {
 
   await model.loadForecast(coords);
 
+  if (suggestionIndex) model.resetSearchSuggestions();
+
   const { displayUnits, displayTimeFormat } = model.state;
   const { location, now, forecast } = model.state.weather;
 

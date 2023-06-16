@@ -19,9 +19,11 @@ class TopPanelView extends View {
   }
 
   addHandlerShowForecast(handler) {
-    this._parentElement.addEventListener('mousedown', function (e) {
+    this._parentElement.addEventListener('mousedown', e => {
       const suggestion = e.target.closest('.search__suggestion');
       if (!suggestion) return;
+
+      this._searchBar.value = '';
 
       const { index } = suggestion.dataset;
       handler(index);

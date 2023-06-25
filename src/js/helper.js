@@ -33,6 +33,14 @@ export function importAll(requireFn) {
   return Object.fromEntries(entries);
 }
 
+export const rejectRequest = function (s) {
+  return new Promise(function (_, reject) {
+    setTimeout(function () {
+      reject(new Error(`Request was rejected after ${s * 1000} seconds`));
+    }, s * 1000);
+  });
+};
+
 export async function fetchAndParse(url, settings) {
   try {
     const res = await fetch(url, settings);

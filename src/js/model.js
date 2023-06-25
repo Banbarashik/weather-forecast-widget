@@ -11,6 +11,7 @@ import {
   MILE_PER_HOUR_UNIT,
   TWENTY_FOUR_HOURS_FORMAT,
   TWELVE_HOURS_FORMAT,
+  TIMEOUT_SEC,
 } from './config';
 import {
   fetchAndParse,
@@ -24,6 +25,7 @@ import {
   getCurrentPositionPromise,
   injectMultipleLinkPrefetch,
   convertDateStrToValues,
+  rejectRequest,
 } from './helper';
 
 export const state = {
@@ -152,9 +154,10 @@ function formatSearchSuggestionsArr(arr) {
 
 export async function getUserApproxLocation() {
   try {
-    const { latitude: lat, longitude: lon } = await fetchAndParse(
-      'https://geolocation-db.com/json/'
-    );
+    const { latitude: lat, longitude: lon } = await Promise.race([
+      fetchAndParse('https://geolocation-db.com/json/'),
+      rejectRequest(TIMEOUT_SEC),
+    ]);
 
     state.isUserApproxLocationLoaded = true;
 

@@ -34,8 +34,12 @@ export function importAll(requireFn) {
 }
 
 export async function fetchAndParse(url, settings) {
-  const res = await fetch(url, settings);
-  return res.json();
+  try {
+    const res = await fetch(url, settings);
+    return res.json();
+  } catch (err) {
+    throw err;
+  }
 }
 
 export const convertDateStrToValues = dateStr =>

@@ -151,13 +151,18 @@ function formatSearchSuggestionsArr(arr) {
 }
 
 export async function getUserApproxLocation() {
-  const { latitude: lat, longitude: lon } = await fetchAndParse(
-    'https://geolocation-db.com/json/'
-  );
+  try {
+    const { latitude: lat, longitude: lon } = await fetchAndParse(
+      'https://geolocation-db.com/json/'
+    );
 
-  state.isUserApproxLocationLoaded = true;
+    state.isUserApproxLocationLoaded = true;
 
-  return { lat, lon };
+    return { lat, lon };
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
 }
 
 export async function getUserPreciseLocation() {
@@ -186,7 +191,7 @@ export function getSearchSuggestionLocation(index) {
 }
 
 // prettier-ignore
-export async function loadForecast({lat, lon, name = '', region = '', country = ''}) {
+export async function loadForecast({lat = 35.36, lon = -100.38, name = '', region = '', country = ''}) {
   const { location, current, forecast } = await fetchAndParse('/.netlify/functions/load-forecast', {
     method: 'POST',
     cache: 'no-cache',

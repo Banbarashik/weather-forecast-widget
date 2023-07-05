@@ -21,7 +21,7 @@
     "dotenv": "^16.1.4",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "netlify-cli": "^15.5.1",
+    "netlify-cli": "^15.8.0",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "sass": "^1.55.0",
     "sass-loader": "^13.0.2",

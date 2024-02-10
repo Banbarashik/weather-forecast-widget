@@ -1,5 +1,3 @@
-# Weather Forecast Widget
-
 ## Features
 
 - 3-day forecast with hourly forecasts

@@ -164,6 +164,9 @@ export async function getUserApproxLocation() {
     return { lat, lon };
   } catch (err) {
     console.error(err);
+
+    state.isUserApproxLocationLoaded = true;
+
     return {};
   }
 }

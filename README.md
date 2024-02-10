@@ -11,8 +11,9 @@
 
 - JavaScript
 - HTML
-- CSS (SASS)
+- CSS (SCSS)
 - [Geolocation DB](https://geolocation-db.com/) API
 - Geolocation Web API
 - [Weather API](https://www.weatherapi.com/)
 - Webpack
+- Netlify Functions
